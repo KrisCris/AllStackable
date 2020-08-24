@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "allstackable",
+  "version": "1.0",
+
+  "name": "All Stackable",
+  "description": "Try using 10 Bows at a time! (Wrong)",
+  "authors": [
+    "Conn_Lost"
+  ],
+  "contact": {
+    "homepage": "meh",
+    "sources": "meh"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/allstackable/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.connlost.allstackable.AllStackableInit"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
