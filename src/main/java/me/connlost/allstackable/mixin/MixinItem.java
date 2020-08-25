@@ -30,6 +30,17 @@ public abstract class MixinItem implements IItemMaxCount {
         this.maxCount = i;
     }
 
+    @Override
+    public int getVanillaMaxCount() {
+        return vanillaMaxCount;
+    }
+
+    @Override
+    public void setVanillaMaxCount(int vanillaMaxCount) {
+        this.vanillaMaxCount = vanillaMaxCount;
+    }
+
+    //TODO using ItemHelper to assign the vanillaMaxCount
     @Inject(method = "<init>", at = @At("RETURN"))
     private void setVanillaMaxCount(Item.Settings settings, CallbackInfo ci){
         this.vanillaMaxCount = maxCount;

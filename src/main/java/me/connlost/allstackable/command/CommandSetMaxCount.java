@@ -19,6 +19,25 @@ import java.util.Map;
 
 final public class CommandSetMaxCount {
 
+    //TODO re-design commands
+    //allstackable
+    //->list
+    //  ->modified
+    //      ->[modifiedCount]
+    //  ->vanilla [maxCount]
+    //->modify
+    //  ->[item] [count]
+    //  ->group
+    //      ->vanilla [vanillaMaxCount] [newCount]
+    //      ->modified [oldCount] [newCount]
+    //      ->all [newCount]
+    //->revert
+    //  ->[item]
+    //  ->group
+    //      ->[count]
+    //->revertall
+    //
+    //
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             dispatcher.register((LiteralArgumentBuilder) ((LiteralArgumentBuilder) CommandManager.literal("allstackable").requires(source -> source.hasPermissionLevel(4))
@@ -57,6 +76,7 @@ final public class CommandSetMaxCount {
         });
     }
 
+    //TODO Refactor and put some methods to ItemsHelper
     private static int revertAll(ServerCommandSource source){
         for (Map.Entry<String, Integer> entry : ConfigManager.getConfigManager().getEntry()) {
             resetItem(Registry.ITEM.get(new Identifier(entry.getKey())));
