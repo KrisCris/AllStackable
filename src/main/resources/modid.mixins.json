@@ -4,7 +4,9 @@
   "package": "me.connlost.allstackable.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinItem"
+    "MixinItem",
+    "MixinPlayerManager",
+    "MixinMinecraftServer"
   ],
   "client": [
 

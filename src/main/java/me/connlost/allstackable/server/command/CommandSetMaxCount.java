@@ -1,10 +1,10 @@
-package me.connlost.allstackable.command;
+package me.connlost.allstackable.server.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import me.connlost.allstackable.config.ConfigManager;
+import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.IItemMaxCount;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.ItemStackArgumentType;
@@ -78,7 +78,7 @@ final public class CommandSetMaxCount {
 
     //TODO Refactor and put some methods to ItemsHelper
     private static int revertAll(ServerCommandSource source){
-        for (Map.Entry<String, Integer> entry : ConfigManager.getConfigManager().getEntry()) {
+        for (Map.Entry<String, Integer> entry : ConfigManager.getConfigManager().getConfigEntry()) {
             resetItem(Registry.ITEM.get(new Identifier(entry.getKey())));
         }
         ConfigManager.getConfigManager().removeAllConfig();
@@ -107,7 +107,7 @@ final public class CommandSetMaxCount {
     }
 
     private static int listAllModifiedItems(ServerCommandSource source) {
-        for (Map.Entry<String, Integer> entry : ConfigManager.getConfigManager().getEntry()) {
+        for (Map.Entry<String, Integer> entry : ConfigManager.getConfigManager().getConfigEntry()) {
             source.sendFeedback(new LiteralText(info(Registry.ITEM.get(new Identifier(entry.getKey())))), false);
         }
         return Command.SINGLE_SUCCESS;

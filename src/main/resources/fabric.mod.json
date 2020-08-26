@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "me.connlost.allstackable.AllStackableInit"
+    ],
+    "client": [
+      "me.connlost.allstackable.client.AllStackableClientInit"
     ]
   },
   "mixins": [

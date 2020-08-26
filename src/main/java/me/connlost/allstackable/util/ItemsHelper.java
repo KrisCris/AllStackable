@@ -1,9 +1,11 @@
 package me.connlost.allstackable.util;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,8 +30,7 @@ public class ItemsHelper {
      * Get all Items and put them into different groups of vanilla maxCount.
      */
     private void initDefaultMaxCount(){
-        Set<Map.Entry<RegistryKey<Item>, Item>> itemSet =  Registry.ITEM.getEntries();
-        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : itemSet){
+        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()){
             Item item = itemEntry.getValue();
             int vanillaMaxCount = ((IItemMaxCount)item).getVanillaMaxCount();
             if (!defaultMaxCountMap.containsKey(vanillaMaxCount)){
@@ -42,6 +43,22 @@ public class ItemsHelper {
     //TODO Lots of works...
 
 
+    public void resetAll(){
+        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()){
+            Item item = itemEntry.getValue();
+            ((IItemMaxCount)item).revert();
+        }
+    }
+
+    public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet){
+        for (Map.Entry<String, Integer> entry: configSet){
+            ((IItemMaxCount)Registry.ITEM.get(new Identifier(entry.getKey()))).setMaxCount(entry.getValue());
+        }
+    }
+
+    private Set<Map.Entry<RegistryKey<Item>, Item>> getItemSet(){
+        return Registry.ITEM.getEntries();
+    }
 
 
 }
