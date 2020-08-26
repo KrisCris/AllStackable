@@ -7,9 +7,10 @@
     "MixinItem",
     "MixinPlayerManager",
     "MixinMinecraftServer"
+
   ],
   "client": [
-
+    "MixinMinecraftClientGame"
   ],
   "injectors": {
     "defaultRequire": 1

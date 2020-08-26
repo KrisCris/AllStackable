@@ -6,7 +6,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Map;
-import java.util.Set;
 
 public class ConfigSync {
     private static ItemsHelper itemsHelper = ItemsHelper.getItemsHelper();
