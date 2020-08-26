@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
   "id": "allstackable",
-  "version": "1.0",
+  "version": "1.1",
 
   "name": "All Stackable",
-  "description": "Try using 10 Bows at a time! (Wrong)",
+  "description": "Try using 10 Bows at a time! (x)",
   "authors": [
     "Conn_Lost"
   ],
   "contact": {
-    "homepage": "meh",
-    "sources": "meh"
+    "homepage": "https://github.com/KrisCris/AllStackable",
+    "sources": "https://github.com/KrisCris/AllStackable"
   },
 
-  "license": "CC0-1.0",
+  "license": "GPL-3.0",
   "icon": "assets/allstackable/icon.png",
 
   "environment": "*",
