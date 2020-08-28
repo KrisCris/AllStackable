@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import me.connlost.allstackable.server.Server;
 import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
-import net.minecraft.nbt.CompoundTag;
 import org.apache.commons.lang3.SerializationUtils;
 
 final public class ConfigManager {
@@ -58,6 +57,7 @@ final public class ConfigManager {
                 throw new RuntimeException("Could not parse config", e);
             }
         } else {
+            this.configMap.clear();
             writeConfig();
         }
 

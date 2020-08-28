@@ -5,7 +5,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -55,6 +54,20 @@ public class ItemsHelper {
             ((IItemMaxCount)Registry.ITEM.get(new Identifier(entry.getKey()))).setMaxCount(entry.getValue());
         }
     }
+
+    public int getDefaultCount(Item item){
+        return ((IItemMaxCount)item).getVanillaMaxCount();
+    }
+
+    public int getCurrentCount(Item item){
+        return item.getMaxCount();
+    }
+
+    public void setSingle(Item item, int count){
+        ((IItemMaxCount)item).setMaxCount(count);
+
+    }
+
 
     private Set<Map.Entry<RegistryKey<Item>, Item>> getItemSet(){
         return Registry.ITEM.getEntries();

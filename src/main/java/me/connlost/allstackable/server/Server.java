@@ -1,12 +1,11 @@
 package me.connlost.allstackable.server;
 
+import me.connlost.allstackable.server.command.CommandSetMaxCount;
 import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.WorldSavePath;
-
-import java.util.ArrayList;
 
 
 public class Server {

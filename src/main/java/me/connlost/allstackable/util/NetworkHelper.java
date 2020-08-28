@@ -13,7 +13,7 @@ public class NetworkHelper {
 
     public static void sentConfigToPlayers(List<ServerPlayerEntity> players){
         for (ServerPlayerEntity player:players){
-            //TODO send packets
+            sentConfigToPlayer(player);
         }
     }
 
