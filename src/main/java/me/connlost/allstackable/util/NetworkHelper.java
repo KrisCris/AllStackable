@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NetworkHelper {
 
-    public static void sentConfigToPlayers(List<ServerPlayerEntity> players){
+    public static void sentConfigToAll(List<ServerPlayerEntity> players){
         for (ServerPlayerEntity player:players){
             sentConfigToPlayer(player);
         }
