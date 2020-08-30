@@ -9,6 +9,7 @@ import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.Item;
@@ -26,11 +27,10 @@ public class CommandSetMaxCount {
 
 
 
-    private static int showItem(ServerCommandSource source, ItemStackArgument isa) throws CommandSyntaxException {
-        Item item = isa.getItem();
+    private static int showItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
         source.sendFeedback(new TranslatableText("as.command.show_item",
                 new Object[] {
-                        isa.createStack(1, false).toHoverableText(),
+                        new TranslatableText(item.getTranslationKey()),
                         Integer.valueOf(itemsHelper.getCurrentCount(item)),
                         Integer.valueOf(itemsHelper.getDefaultCount(item))
                 }),false);
@@ -43,10 +43,9 @@ public class CommandSetMaxCount {
             source.sendFeedback(new TranslatableText("as.command.show_none"), false);
         }
         for (Item item : list) {
-            ItemStackArgument isa = new ItemStackArgument(item, null);
             source.sendFeedback(new TranslatableText("as.command.show_item",
                     new Object[] {
-                            isa.createStack(1, false).toHoverableText(),
+                            new TranslatableText(item.getTranslationKey()),
                             Integer.valueOf(itemsHelper.getCurrentCount(item)),
                             Integer.valueOf(itemsHelper.getDefaultCount(item))
                     }),false);
@@ -54,19 +53,18 @@ public class CommandSetMaxCount {
         return 1;
     }
 
-    private static int setItem(ServerCommandSource source, ItemStackArgument isa, int count) throws CommandSyntaxException {
+    private static int setItem(ServerCommandSource source, Item item, int count) throws CommandSyntaxException {
         if (count > 64) {
             source.sendError(new TranslatableText("as.command.error_exceeded"));
             return 0;
         } else {
-            Item item = isa.getItem();
             itemsHelper.setSingle(item, count);
             configManager.syncConfig();
             NetworkHelper.sentConfigToAll(Server.minecraft_server.getPlayerManager().getPlayerList());
             source.sendFeedback(new TranslatableText("as.command.set_item",
                     new Object[] {
                             source.getName(),
-                            isa.createStack(1, false).toHoverableText(),
+                            new TranslatableText(item.getTranslationKey()),
                             Integer.valueOf(count),
                             itemsHelper.getDefaultCount(item)
                     }), true);
@@ -74,13 +72,13 @@ public class CommandSetMaxCount {
         return 1;
     }
 
-    private static int resetItem(ServerCommandSource source, ItemStackArgument isa) throws CommandSyntaxException {
-        itemsHelper.resetItem(isa.getItem());
+    private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
+        itemsHelper.resetItem(item);
         configManager.syncConfig();
         NetworkHelper.sentConfigToAll(Server.minecraft_server.getPlayerManager().getPlayerList());
         source.sendFeedback(new TranslatableText("as.command.reset_item",
                 new Object[] {
-                        isa.createStack(1, false).toHoverableText(),
+                        new TranslatableText(item.getTranslationKey()),
                         source.getName()
                 }), true);
         return 1;
@@ -108,7 +106,7 @@ public class CommandSetMaxCount {
                             )
 
                             .then((RequiredArgumentBuilder) CommandManager.argument("item", ItemStackArgumentType.itemStack())
-                                    .executes(ctx -> showItem((ServerCommandSource)ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item")))
+                                    .executes(ctx -> showItem((ServerCommandSource)ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                             )
 
                     )
@@ -119,7 +117,7 @@ public class CommandSetMaxCount {
                             )
 
                             .then((RequiredArgumentBuilder) CommandManager.argument("item", ItemStackArgumentType.itemStack())
-                                    .executes(ctx -> resetItem((ServerCommandSource) ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item")))
+                                    .executes(ctx -> resetItem((ServerCommandSource) ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                             )
                     )
 
@@ -128,7 +126,7 @@ public class CommandSetMaxCount {
                                     .then(CommandManager.argument("count", IntegerArgumentType.integer(1))
                                             .executes(ctx -> setItem(
                                                     (ServerCommandSource) ctx.getSource(),
-                                                    ItemStackArgumentType.getItemStackArgument(ctx, "item"),
+                                                    ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
                                                     IntegerArgumentType.getInteger(ctx, "count"))))
                             )
                     )
