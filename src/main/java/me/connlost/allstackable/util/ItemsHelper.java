@@ -39,14 +39,16 @@ public class ItemsHelper {
         }
     }
 
-    //TODO Lots of works...
-
 
     public void resetAll(){
         for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()){
             Item item = itemEntry.getValue();
             ((IItemMaxCount)item).revert();
         }
+    }
+
+    public void resetItem(Item item){
+        setSingle(item, getDefaultCount(item));
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet){
@@ -66,6 +68,28 @@ public class ItemsHelper {
     public void setSingle(Item item, int count){
         ((IItemMaxCount)item).setMaxCount(count);
 
+    }
+
+    public LinkedList<Item> getAllModifiedItem(){
+        LinkedList<Item> list = new LinkedList<>();
+        for (Map.Entry<RegistryKey<Item>, Item> itemEntry: getItemSet()){
+            Item item = itemEntry.getValue();
+            if (getDefaultCount(item) != getCurrentCount(item) && !list.contains(item)){
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+    public LinkedHashMap<String, Integer> getNewConfigMap(){
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        for (Map.Entry<RegistryKey<Item>, Item> itemEntry: getItemSet()){
+            Item item = itemEntry.getValue();
+            if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(item.toString())){
+                map.put(item.toString(), item.getMaxCount());
+            }
+        }
+        return map;
     }
 
 

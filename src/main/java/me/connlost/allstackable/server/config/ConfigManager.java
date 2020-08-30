@@ -82,36 +82,15 @@ final public class ConfigManager {
         }
     }
 
-    public Map<String, Integer> addConfig(String id, int count){
-        if (!configMap.containsKey(id)){
-            configMap.put(id, count);
-        } else {
-            configMap.replace(id, count);
-        }
-
+    public Map<String, Integer> syncConfig(){
+        configMap = itemsHelper.getNewConfigMap();
         writeConfig();
-        //Temp
-        NetworkHelper.sentConfigToPlayers(Server.minecraft_server.getPlayerManager().getPlayerList());
-        //
         return configMap;
     }
 
-    public void removeConfig(String id){
-        if(configMap.containsKey(id)){
-            configMap.remove(id);
-        }
-        writeConfig();
-        //Temp
-        NetworkHelper.sentConfigToPlayers(Server.minecraft_server.getPlayerManager().getPlayerList());
-        //
-    }
-
-    public void removeAllConfig(){
+    public void resetAll(){
         configMap.clear();
         writeConfig();
-        //Temp
-        NetworkHelper.sentConfigToPlayers(Server.minecraft_server.getPlayerManager().getPlayerList());
-        //
     }
 
 
