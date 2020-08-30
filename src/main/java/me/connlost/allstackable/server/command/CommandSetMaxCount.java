@@ -10,11 +10,14 @@ import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
@@ -24,7 +27,6 @@ public class CommandSetMaxCount {
 
     private static ItemsHelper itemsHelper = ItemsHelper.getItemsHelper();
     private static ConfigManager configManager = ConfigManager.getConfigManager();
-
 
 
     private static int showItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
@@ -70,6 +72,16 @@ public class CommandSetMaxCount {
                     }), true);
         }
         return 1;
+    }
+
+    private static int setItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity, int count) throws CommandSyntaxException {
+        ItemStack itemStack = serverPlayerEntity.getMainHandStack();
+        if (itemStack.isEmpty()){
+            source.sendError(new TranslatableText("as.command.error_empty_hand", serverPlayerEntity.getName()));
+            return 0;
+        }
+
+        return setItem(source, itemStack.getItem(), count);
     }
 
     private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
@@ -127,6 +139,14 @@ public class CommandSetMaxCount {
                                             .executes(ctx -> setItem(
                                                     (ServerCommandSource) ctx.getSource(),
                                                     ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
+                                                    IntegerArgumentType.getInteger(ctx, "count"))))
+                            )
+
+                            .then(CommandManager.argument("targets", EntityArgumentType.player())
+                                    .then(CommandManager.argument("count", IntegerArgumentType.integer(1))
+                                            .executes(ctx -> setItemOnHand(
+                                                    (ServerCommandSource) ctx.getSource(),
+                                                    EntityArgumentType.getPlayer(ctx,"targets"),
                                                     IntegerArgumentType.getInteger(ctx, "count"))))
                             )
                     )

@@ -4,6 +4,8 @@
   "as.command.show_none": "不存在被修改的物品",
   "as.command.reset_item": "%s的最大堆叠量被%s重置了！",
   "as.command.reset_all": "%s重置了所有物品的堆叠数量！",
-  "as.command.error_exceeded": "你最多只能将其设置为64!"
+  "as.command.error_exceeded": "你最多只能将其设置为64!",
+  "as.command.error_empty_hand": "%s的主手上没有物品"
+
 
 }
