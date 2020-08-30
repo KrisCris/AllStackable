@@ -1,0 +1,8 @@
+{
+  "as.command.set_item": "%s set the max stackable count of %s to %s (Default: %s)",
+  "as.command.show_item": "The max stackable count of %s is %s (Default: %s)",
+  "as.command.show_none": "No item has been modified",
+  "as.command.reset_item": "The max stackable count of %s has been reset by %s",
+  "as.command.reset_all": "All max stackable modifications has been reset by %s",
+  "as.command.error_exceeded": "You could only set it up to 64!"
+}

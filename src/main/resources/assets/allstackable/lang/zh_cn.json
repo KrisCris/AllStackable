@@ -1,0 +1,9 @@
+{
+  "as.command.set_item": "%s将%s的最大堆叠量设置为：%s！  (默认：%s)",
+  "as.command.show_item": "%s的最大堆叠量为%d  (默认：%s)",
+  "as.command.show_none": "不存在被修改的物品",
+  "as.command.reset_item": "%s的最大堆叠量被%s重置了！",
+  "as.command.reset_all": "%s重置了所有物品的堆叠数量！",
+  "as.command.error_exceeded": "你最多只能将其设置为64!"
+
+}
