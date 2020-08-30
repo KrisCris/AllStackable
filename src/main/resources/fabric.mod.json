@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "allstackable",
-  "version": "1.2",
+  "version": "1.2.1",
 
   "name": "All Stackable",
   "description": "Try using 10 Bows at a time! (x)",
