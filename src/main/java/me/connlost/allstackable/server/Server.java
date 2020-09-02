@@ -1,9 +1,11 @@
 package me.connlost.allstackable.server;
 
-import me.connlost.allstackable.server.command.CommandSetMaxCount;
+import com.mojang.brigadier.CommandDispatcher;
+import me.connlost.allstackable.server.command.SetMaxCommand;
 import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.WorldSavePath;
 
@@ -20,5 +22,9 @@ public class Server {
 
     public static void onPlayerJoin(ServerPlayerEntity player){
         NetworkHelper.sentConfigToPlayer(player);
+    }
+
+    public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher){
+        SetMaxCommand.register(dispatcher);
     }
 }
