@@ -49,6 +49,14 @@ public class SetMaxCommand {
         return 1;
     }
 
+    private static int showItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
+        Item item = null;
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
+            return 0;
+        }
+        return showItem(source, item);
+    }
+
     private static int setItem(ServerCommandSource source, Item item, int count) throws CommandSyntaxException {
         if (count > 64) {
             source.sendError(new TranslatableText("as.command.error_exceeded"));
@@ -116,6 +124,10 @@ public class SetMaxCommand {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
 
                 .then(literal("show")
+                        .then(literal("hand")
+                                .then(argument("targets", EntityArgumentType.player())
+                                        .executes(ctx -> showItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
+                        )
                         .then(literal("all")
                                 .executes(ctx -> showAll((ServerCommandSource) ctx.getSource()))
                         )
