@@ -6,8 +6,10 @@
   "mixins": [
     "MixinItem",
     "MixinPlayerManager",
-    "MixinMinecraftServer"
-
+    "MixinMinecraftServer",
+    "MixinCommandManager",
+    "MixinMushroomStewItem",
+    "MixinSuspiciousStewItem"
   ],
   "client": [
     "MixinMinecraftClientGame"
