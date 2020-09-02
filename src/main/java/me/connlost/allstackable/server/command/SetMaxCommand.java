@@ -67,13 +67,11 @@ public class SetMaxCommand {
     }
 
     private static int setItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity, int count) throws CommandSyntaxException {
-        ItemStack itemStack = serverPlayerEntity.getMainHandStack();
-        if (itemStack.isEmpty()){
-            source.sendError(new TranslatableText("as.command.error_empty_hand", serverPlayerEntity.getName().getString()==source.getName()?"You":serverPlayerEntity.getName()));
+        Item item = null;
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
             return 0;
         }
-
-        return setItem(source, itemStack.getItem(), count);
+        return setItem(source, item, count);
     }
 
     private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
@@ -95,6 +93,24 @@ public class SetMaxCommand {
         return 1;
     }
 
+    private static int resetItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
+        Item item = null;
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
+            return 0;
+        }
+        return resetItem(source, item);
+    }
+
+    private static Item getMainHandItem(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
+        ItemStack itemStack = serverPlayerEntity.getMainHandStack();
+        if (itemStack.isEmpty()){
+            String u1 = serverPlayerEntity.getName().asString();
+            String u2 = source.getPlayer().getName().asString();
+            source.sendError(new TranslatableText("as.command.error_empty_hand", u1.equals(u2)?new TranslatableText("as.command.you"):serverPlayerEntity.getName()));
+            return null;
+        }
+        return itemStack.getItem();
+    }
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
@@ -109,6 +125,10 @@ public class SetMaxCommand {
 
                 )
                 .then(literal("reset")
+                        .then(literal("hand")
+                                .then(argument("targets", EntityArgumentType.player())
+                                        .executes(ctx -> resetItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
+                        )
                         .then(literal("all")
                                 .executes(ctx -> resetAll(ctx.getSource()))
                         )
