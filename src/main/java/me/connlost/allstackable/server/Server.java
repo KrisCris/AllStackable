@@ -1,6 +1,7 @@
 package me.connlost.allstackable.server;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.connlost.allstackable.AllStackableInit;
 import me.connlost.allstackable.server.command.SetMaxCommand;
 import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.NetworkHelper;
@@ -18,6 +19,7 @@ public class Server {
         minecraft_server = ms;
         config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("all_stackable.json").toFile());
         config_manager.setupConfig();
+        AllStackableInit.LOG.info("AllStackable Loaded!");
     }
 
     public static void onPlayerJoin(ServerPlayerEntity player){
