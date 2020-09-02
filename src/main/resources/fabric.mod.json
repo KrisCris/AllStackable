@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "allstackable",
-  "version": "1.2.1",
+  "version": "1.2.2",
 
   "name": "All Stackable",
   "description": "Try using 10 Bows at a time! (x)",
@@ -9,7 +9,7 @@
     "Conn_Lost"
   ],
   "contact": {
-    "homepage": "https://github.com/KrisCris/AllStackable",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/all-stackable/",
     "sources": "https://github.com/KrisCris/AllStackable"
   },
 
