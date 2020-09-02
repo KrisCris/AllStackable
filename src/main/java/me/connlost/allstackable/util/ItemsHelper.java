@@ -1,5 +1,6 @@
 package me.connlost.allstackable.util;
 
+import me.connlost.allstackable.AllStackableInit;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -45,14 +46,17 @@ public class ItemsHelper {
             Item item = itemEntry.getValue();
             ((IItemMaxCount)item).revert();
         }
+        AllStackableInit.LOG.info("[All Stackable] Reset All!!");
     }
 
     public void resetItem(Item item){
         setSingle(item, getDefaultCount(item));
+        AllStackableInit.LOG.info("[All Stackable] Reset "+item.toString());
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet){
         for (Map.Entry<String, Integer> entry: configSet){
+            AllStackableInit.LOG.info("[All Stackable] Set "+entry.getKey()+" to "+entry.getValue());
             ((IItemMaxCount)Registry.ITEM.get(new Identifier(entry.getKey()))).setMaxCount(entry.getValue());
         }
     }
@@ -67,7 +71,7 @@ public class ItemsHelper {
 
     public void setSingle(Item item, int count){
         ((IItemMaxCount)item).setMaxCount(count);
-
+        AllStackableInit.LOG.info("[All Stackable] Set "+item.toString()+" to "+count);
     }
 
     public LinkedList<Item> getAllModifiedItem(){

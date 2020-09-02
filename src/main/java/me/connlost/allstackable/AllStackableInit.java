@@ -14,7 +14,7 @@ public class AllStackableInit implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOG.info("AllStackable start loading!");
+		LOG.info("[All Stackable] Start loading!");
 	}
 
 

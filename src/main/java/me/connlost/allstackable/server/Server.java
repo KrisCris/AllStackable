@@ -19,7 +19,7 @@ public class Server {
         minecraft_server = ms;
         config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("all_stackable.json").toFile());
         config_manager.setupConfig();
-        AllStackableInit.LOG.info("AllStackable Loaded!");
+        AllStackableInit.LOG.info("[All Stackable] Loaded!");
     }
 
     public static void onPlayerJoin(ServerPlayerEntity player){
