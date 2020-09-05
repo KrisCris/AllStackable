@@ -9,7 +9,8 @@
     "MixinMinecraftServer",
     "MixinCommandManager",
     "MixinMushroomStewItem",
-    "MixinSuspiciousStewItem"
+    "MixinSuspiciousStewItem",
+    "MixinBucketItem"
   ],
   "client": [
     "MixinMinecraftClientGame"
