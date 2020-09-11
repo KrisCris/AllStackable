@@ -6,6 +6,7 @@
   "as.command.reset_all": "All max stackable modifications has been reset by %s",
   "as.command.error_exceeded": "You could only set it up to 64!",
   "as.command.error_empty_hand": "%s has nothing on the main hand!",
-  "as.command.you": "You"
+  "as.command.you": "You",
+  "as.command.reloaded": "Configuration is reloaded by %s."
 
 }

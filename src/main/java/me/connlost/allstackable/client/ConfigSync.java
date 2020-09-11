@@ -13,14 +13,12 @@ public class ConfigSync {
 
     public static void syncConfig(Map<String, Integer> configMap){
         AllStackableInit.LOG.info("[All Stackable][Client] Sync config from server side!");
-        for (Map.Entry<String, Integer> configEntry : configMap.entrySet()){
-            ((IItemMaxCount) Registry.ITEM.get(new Identifier(configEntry.getKey()))).setMaxCount(configEntry.getValue());
-            AllStackableInit.LOG.info("[All Stackable][Client] Set "+configEntry.getKey()+" to "+configEntry.getValue());
-        }
+        itemsHelper.setCountByConfig(configMap.entrySet(), false);
+        AllStackableInit.LOG.info("[All Stackable][Client] Sync finished.");
     }
 
     public static void resetConfig(){
-        itemsHelper.resetAll();
+        itemsHelper.resetAll(false);
         AllStackableInit.LOG.info("[All Stackable][Client] Config reset!");
     }
 }

@@ -64,7 +64,6 @@ public class SetMaxCommand {
         } else {
             itemsHelper.setSingle(item, count);
             configManager.syncConfig();
-            NetworkHelper.sentConfigToAll(Server.minecraft_server.getPlayerManager().getPlayerList());
             source.sendFeedback(new TranslatableText("as.command.set_item",
                     source.getName(),
                     new TranslatableText(item.getTranslationKey()),
@@ -85,7 +84,6 @@ public class SetMaxCommand {
     private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
         itemsHelper.resetItem(item);
         configManager.syncConfig();
-        NetworkHelper.sentConfigToAll(Server.minecraft_server.getPlayerManager().getPlayerList());
         source.sendFeedback(new TranslatableText("as.command.reset_item",
                 new TranslatableText(item.getTranslationKey()),
                 source.getName()), true);
@@ -93,9 +91,8 @@ public class SetMaxCommand {
     }
 
     private static int resetAll(ServerCommandSource source){
-        itemsHelper.resetAll();
+        itemsHelper.resetAll(true);
         configManager.resetAll();
-        NetworkHelper.sentConfigToAll(Server.minecraft_server.getPlayerManager().getPlayerList());
         source.sendFeedback(new TranslatableText("as.command.reset_all",
                 source.getName()), true);
         return 1;
@@ -120,6 +117,12 @@ public class SetMaxCommand {
         return itemStack.getItem();
     }
 
+    private static int reloadConfig(ServerCommandSource source) throws CommandSyntaxException {
+        configManager.setupConfig();
+        source.sendFeedback(new TranslatableText("as.command.reloaded", source.getPlayer().getName()), true);
+        return 1;
+    }
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
 
@@ -129,10 +132,10 @@ public class SetMaxCommand {
                                         .executes(ctx -> showItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
                         )
                         .then(literal("all")
-                                .executes(ctx -> showAll((ServerCommandSource) ctx.getSource()))
+                                .executes(ctx -> showAll(ctx.getSource()))
                         )
                         .then(argument("item", ItemStackArgumentType.itemStack())
-                                .executes(ctx -> showItem((ServerCommandSource)ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
+                                .executes(ctx -> showItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                         )
 
                 )
@@ -145,14 +148,14 @@ public class SetMaxCommand {
                                 .executes(ctx -> resetAll(ctx.getSource()))
                         )
                         .then(argument("item", ItemStackArgumentType.itemStack())
-                                .executes(ctx -> resetItem((ServerCommandSource) ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
+                                .executes(ctx -> resetItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                         )
                 )
                 .then(literal("set")
                         .then(argument("item", ItemStackArgumentType.itemStack())
                                 .then(argument("count", IntegerArgumentType.integer(1))
                                         .executes(ctx -> setItem(
-                                                (ServerCommandSource) ctx.getSource(),
+                                                ctx.getSource(),
                                                 ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
                                                 IntegerArgumentType.getInteger(ctx, "count"))))
                         )
@@ -160,11 +163,14 @@ public class SetMaxCommand {
                                 .then(argument("targets", EntityArgumentType.player())
                                         .then(argument("count", IntegerArgumentType.integer(1))
                                                 .executes(ctx -> setItemOnHand(
-                                                        (ServerCommandSource) ctx.getSource(),
+                                                        ctx.getSource(),
                                                         EntityArgumentType.getPlayer(ctx,"targets"),
                                                         IntegerArgumentType.getInteger(ctx, "count"))))
                                 )
                         )
+                )
+                .then(literal("reload")
+                        .executes(ctx -> reloadConfig(ctx.getSource()))
                 );
 
         dispatcher.register(literalArgumentBuilder);
