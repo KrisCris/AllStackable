@@ -41,12 +41,13 @@ public class ItemsHelper {
     }
 
 
-    public void resetAll(){
+    public void resetAll(boolean serverSide){
         for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()){
             Item item = itemEntry.getValue();
             ((IItemMaxCount)item).revert();
         }
-        AllStackableInit.LOG.info("[All Stackable] Reset All!!");
+        if (serverSide) AllStackableInit.LOG.info("[All Stackable] All Reset!");
+        else AllStackableInit.LOG.info("[All Stackable] [Client] Reset");
     }
 
     public void resetItem(Item item){
@@ -54,9 +55,11 @@ public class ItemsHelper {
         AllStackableInit.LOG.info("[All Stackable] Reset "+item.toString());
     }
 
-    public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet){
+    public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet, boolean serverSide){
+        resetAll(serverSide);
         for (Map.Entry<String, Integer> entry: configSet){
-            AllStackableInit.LOG.info("[All Stackable] Set "+entry.getKey()+" to "+entry.getValue());
+            if (serverSide) AllStackableInit.LOG.info("[All Stackable] Set "+entry.getKey()+" to "+entry.getValue());
+            else AllStackableInit.LOG.info("[All Stackable] [Client] Set "+entry.getKey()+" to "+entry.getValue());
             ((IItemMaxCount)Registry.ITEM.get(new Identifier(entry.getKey()))).setMaxCount(entry.getValue());
         }
     }
@@ -89,8 +92,9 @@ public class ItemsHelper {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         for (Map.Entry<RegistryKey<Item>, Item> itemEntry: getItemSet()){
             Item item = itemEntry.getValue();
-            if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(item.toString())){
-                map.put(item.toString(), item.getMaxCount());
+            String id = Registry.ITEM.getId(item).toString();
+            if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(id)){
+                map.put(id, item.getMaxCount());
             }
         }
         return map;
