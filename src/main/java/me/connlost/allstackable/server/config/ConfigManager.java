@@ -7,10 +7,13 @@ import java.util.Set;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import me.connlost.allstackable.server.Server;
+import me.connlost.allstackable.AllStackableInit;
 import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
 import org.apache.commons.lang3.SerializationUtils;
+
+
+import static me.connlost.allstackable.AllStackableInit.LOG;
 
 final public class ConfigManager {
     private static ConfigManager cm;
@@ -46,7 +49,9 @@ final public class ConfigManager {
 
     public void setupConfig(){
         loadConfig();
-        itemsHelper.setCountByConfig(this.configMap.entrySet());
+        itemsHelper.setCountByConfig(this.configMap.entrySet(),true);
+        NetworkHelper.sentConfigToAll();
+        LOG.info("[All Stackable] Config Loaded");
     }
 
     public Map<String, Integer> loadConfig(){
@@ -54,7 +59,8 @@ final public class ConfigManager {
             try (FileReader reader = new FileReader(this.configFile)){
                 configMap = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
             } catch (IOException e) {
-                throw new RuntimeException("Could not parse config", e);
+                LOG.error("[All Stackable] Failed to parse config");
+                throw new RuntimeException("[All Stackable] Could not parse config", e);
             }
         } else {
             this.configMap.clear();
@@ -69,15 +75,18 @@ final public class ConfigManager {
 
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
+                LOG.error("Failed to create the parent directory");
                 throw new RuntimeException("Failed to create the parent directory");
             }
         } else if (!dir.isDirectory()) {
+            LOG.error("Failed to create config file");
             throw new RuntimeException("The parent is not a directory");
         }
 
         try (FileWriter writer = new FileWriter(configFile)) {
             gson.toJson(configMap, writer);
         } catch (IOException e) {
+            LOG.error("Failed to save config");
             throw new RuntimeException("Could not save config file", e);
         }
     }
@@ -85,12 +94,14 @@ final public class ConfigManager {
     public Map<String, Integer> syncConfig(){
         configMap = itemsHelper.getNewConfigMap();
         writeConfig();
+        NetworkHelper.sentConfigToAll();
         return configMap;
     }
 
     public void resetAll(){
         configMap.clear();
         writeConfig();
+        NetworkHelper.sentConfigToAll();
     }
 
 
