@@ -12,8 +12,6 @@
 
 *No GUI menu at the moment. You should use /allstackable:*
 
- 
-
 `/allstackable show all` : list all modified items.
 
 `/allstackable show [item]` : show information of a specified item.
