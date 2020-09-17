@@ -8,7 +8,7 @@
 ![](https://i.imgur.com/31Q4pb2.png "")
 
 [![](http://cf.way2muchnoise.eu/full_404312_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable)
-[![](http://cf.way2muchnoise.eu/versions/404312.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable)
+[![](http://cf.way2muchnoise.eu/versions/404312.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
 
 *No GUI menu at the moment. You should use /allstackable:*
 
