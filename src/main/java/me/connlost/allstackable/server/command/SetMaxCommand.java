@@ -8,9 +8,11 @@ import me.connlost.allstackable.server.Server;
 import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
+
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
 
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.Item;
@@ -31,27 +33,27 @@ public class SetMaxCommand {
         source.sendFeedback(new TranslatableText("as.command.show_item",
                 new TranslatableText(item.getTranslationKey()),
                 itemsHelper.getCurrentCount(item),
-                itemsHelper.getDefaultCount(item)),false);
+                itemsHelper.getDefaultCount(item)), false);
         return 1;
     }
 
     private static int showAll(ServerCommandSource source) throws CommandSyntaxException {
         LinkedList<Item> list = itemsHelper.getAllModifiedItem();
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             source.sendFeedback(new TranslatableText("as.command.show_none"), false);
         }
         for (Item item : list) {
             source.sendFeedback(new TranslatableText("as.command.show_item",
                     new TranslatableText(item.getTranslationKey()),
                     itemsHelper.getCurrentCount(item),
-                    itemsHelper.getDefaultCount(item)),false);
+                    itemsHelper.getDefaultCount(item)), false);
         }
         return 1;
     }
 
     private static int showItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
         Item item = null;
-        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null) {
             return 0;
         }
         return showItem(source, item);
@@ -75,7 +77,7 @@ public class SetMaxCommand {
 
     private static int setItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity, int count) throws CommandSyntaxException {
         Item item = null;
-        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null) {
             return 0;
         }
         return setItem(source, item, count);
@@ -90,7 +92,7 @@ public class SetMaxCommand {
         return 1;
     }
 
-    private static int resetAll(ServerCommandSource source){
+    private static int resetAll(ServerCommandSource source) {
         itemsHelper.resetAll(true);
         configManager.resetAll();
         source.sendFeedback(new TranslatableText("as.command.reset_all",
@@ -100,7 +102,7 @@ public class SetMaxCommand {
 
     private static int resetItemOnHand(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
         Item item = null;
-        if ((item = getMainHandItem(source, serverPlayerEntity)) == null){
+        if ((item = getMainHandItem(source, serverPlayerEntity)) == null) {
             return 0;
         }
         return resetItem(source, item);
@@ -108,10 +110,10 @@ public class SetMaxCommand {
 
     private static Item getMainHandItem(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
         ItemStack itemStack = serverPlayerEntity.getMainHandStack();
-        if (itemStack.isEmpty()){
+        if (itemStack.isEmpty()) {
             String u1 = serverPlayerEntity.getName().asString();
             String u2 = source.getPlayer().getName().asString();
-            source.sendError(new TranslatableText("as.command.error_empty_hand", u1.equals(u2)?new TranslatableText("as.command.you"):serverPlayerEntity.getName()));
+            source.sendError(new TranslatableText("as.command.error_empty_hand", u1.equals(u2) ? new TranslatableText("as.command.you") : serverPlayerEntity.getName()));
             return null;
         }
         return itemStack.getItem();
@@ -123,58 +125,59 @@ public class SetMaxCommand {
         return 1;
     }
 
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
+    public static void register() {
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+            LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
 
-                .then(literal("show")
-                        .then(literal("hand")
-                                .then(argument("targets", EntityArgumentType.player())
-                                        .executes(ctx -> showItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
-                        )
-                        .then(literal("all")
-                                .executes(ctx -> showAll(ctx.getSource()))
-                        )
-                        .then(argument("item", ItemStackArgumentType.itemStack())
-                                .executes(ctx -> showItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
-                        )
+                    .then(literal("show")
+                            .then(literal("hand")
+                                    .then(argument("targets", EntityArgumentType.player())
+                                            .executes(ctx -> showItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
+                            )
+                            .then(literal("all")
+                                    .executes(ctx -> showAll(ctx.getSource()))
+                            )
+                            .then(argument("item", ItemStackArgumentType.itemStack())
+                                    .executes(ctx -> showItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
+                            )
 
-                )
-                .then(literal("reset")
-                        .then(literal("hand")
-                                .then(argument("targets", EntityArgumentType.player())
-                                        .executes(ctx -> resetItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
-                        )
-                        .then(literal("all")
-                                .executes(ctx -> resetAll(ctx.getSource()))
-                        )
-                        .then(argument("item", ItemStackArgumentType.itemStack())
-                                .executes(ctx -> resetItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
-                        )
-                )
-                .then(literal("set")
-                        .then(argument("item", ItemStackArgumentType.itemStack())
-                                .then(argument("count", IntegerArgumentType.integer(1))
-                                        .executes(ctx -> setItem(
-                                                ctx.getSource(),
-                                                ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
-                                                IntegerArgumentType.getInteger(ctx, "count"))))
-                        )
-                        .then(literal("hand")
-                                .then(argument("targets", EntityArgumentType.player())
-                                        .then(argument("count", IntegerArgumentType.integer(1))
-                                                .executes(ctx -> setItemOnHand(
-                                                        ctx.getSource(),
-                                                        EntityArgumentType.getPlayer(ctx,"targets"),
-                                                        IntegerArgumentType.getInteger(ctx, "count"))))
-                                )
-                        )
-                )
-                .then(literal("reload")
-                        .executes(ctx -> reloadConfig(ctx.getSource()))
-                );
+                    )
+                    .then(literal("reset")
+                            .then(literal("hand")
+                                    .then(argument("targets", EntityArgumentType.player())
+                                            .executes(ctx -> resetItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
+                            )
+                            .then(literal("all")
+                                    .executes(ctx -> resetAll(ctx.getSource()))
+                            )
+                            .then(argument("item", ItemStackArgumentType.itemStack())
+                                    .executes(ctx -> resetItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
+                            )
+                    )
+                    .then(literal("set")
+                            .then(argument("item", ItemStackArgumentType.itemStack())
+                                    .then(argument("count", IntegerArgumentType.integer(1))
+                                            .executes(ctx -> setItem(
+                                                    ctx.getSource(),
+                                                    ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
+                                                    IntegerArgumentType.getInteger(ctx, "count"))))
+                            )
+                            .then(literal("hand")
+                                    .then(argument("targets", EntityArgumentType.player())
+                                            .then(argument("count", IntegerArgumentType.integer(1))
+                                                    .executes(ctx -> setItemOnHand(
+                                                            ctx.getSource(),
+                                                            EntityArgumentType.getPlayer(ctx, "targets"),
+                                                            IntegerArgumentType.getInteger(ctx, "count"))))
+                                    )
+                            )
+                    )
+                    .then(literal("reload")
+                            .executes(ctx -> reloadConfig(ctx.getSource()))
+                    );
 
-        dispatcher.register(literalArgumentBuilder);
-
+            dispatcher.register(literalArgumentBuilder);
+        });
     }
 
 }

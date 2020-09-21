@@ -7,7 +7,6 @@
     "MixinItem",
     "MixinPlayerManager",
     "MixinMinecraftServer",
-    "MixinCommandManager",
     "MixinMushroomStewItem",
     "MixinSuspiciousStewItem",
     "MixinBucketItem",
