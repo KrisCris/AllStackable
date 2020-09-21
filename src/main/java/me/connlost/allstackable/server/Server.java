@@ -26,7 +26,4 @@ public class Server {
         NetworkHelper.sentConfigToPlayer(player);
     }
 
-    public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher){
-        SetMaxCommand.register(dispatcher);
-    }
 }
