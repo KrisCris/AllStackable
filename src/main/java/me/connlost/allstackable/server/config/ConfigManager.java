@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import me.connlost.allstackable.AllStackableInit;
 import me.connlost.allstackable.util.ItemsHelper;
 import me.connlost.allstackable.util.NetworkHelper;
 import org.apache.commons.lang3.SerializationUtils;
