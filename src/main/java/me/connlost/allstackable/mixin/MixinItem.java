@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.connlost.allstackable.AllStackableInit.LOG;
+
 @Mixin(Item.class)
 public abstract class MixinItem implements IItemMaxCount {
     @Final
@@ -44,6 +46,7 @@ public abstract class MixinItem implements IItemMaxCount {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void setVanillaMaxCount(Item.Settings settings, CallbackInfo ci){
         setVanillaMaxCount(this.maxCount);
+        LOG.info("[All Stackable][Debug] MixinItem Injected.");
     }
 
     @Redirect(method = "isEnchantable", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getMaxCount()I"))
