@@ -1,6 +1,6 @@
 package me.connlost.allstackable;
 
-import me.connlost.allstackable.server.command.SetMaxCommand;
+import me.connlost.allstackable.server.command.StackSizeCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.fabricmc.api.ModInitializer;
@@ -16,7 +16,7 @@ public class AllStackableInit implements ModInitializer {
 	public void onInitialize() {
 		LOG.info("[All Stackable] Start loading!");
 
-		SetMaxCommand.register();
+		StackSizeCommand.register();
 		LOG.info("[All Stackable] Command registered.");
 	}
 

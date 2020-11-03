@@ -22,7 +22,7 @@ import java.util.LinkedList;
 
 import static me.connlost.allstackable.AllStackableInit.LOG;
 
-public class SetMaxCommand {
+public class StackSizeCommand {
 
     private static ItemsHelper itemsHelper = ItemsHelper.getItemsHelper();
     private static ConfigManager configManager = ConfigManager.getConfigManager();
@@ -34,12 +34,12 @@ public class SetMaxCommand {
                 itemsHelper.getCurrentCount(item),
                 itemsHelper.getDefaultCount(item)), false);
 
-        LOG.info(String.format(
-                "The max stackable count of %s is %s (Default: %s)",
-                item.getTranslationKey(),
-                itemsHelper.getCurrentCount(item),
-                itemsHelper.getDefaultCount(item))
-        ); //server side does not translate... :/
+//        LOG.info(String.format(
+//                "The max stackable count of %s is %s (Default: %s)",
+//                item.getTranslationKey(),
+//                itemsHelper.getCurrentCount(item),
+//                itemsHelper.getDefaultCount(item))
+//        ); //server side does not translate... :/
 
         return 1;
     }
@@ -48,7 +48,7 @@ public class SetMaxCommand {
         LinkedList<Item> list = itemsHelper.getAllModifiedItem();
         if (list.isEmpty()) {
             source.sendFeedback(new TranslatableText("as.command.show_none"), false);
-            LOG.info("[All Stackable] No item has been modified");
+//            LOG.info("[All Stackable] No item has been modified");
         }
         for (Item item : list) {
             source.sendFeedback(new TranslatableText("as.command.show_item",
@@ -56,12 +56,12 @@ public class SetMaxCommand {
                     itemsHelper.getCurrentCount(item),
                     itemsHelper.getDefaultCount(item)), false);
 
-            LOG.info(String.format(
-                    "[All Stackable] The max stackable count of %s is %s (Default: %s)",
-                    item.getTranslationKey(),
-                    itemsHelper.getCurrentCount(item),
-                    itemsHelper.getDefaultCount(item))
-            );
+//            LOG.info(String.format(
+//                    "[All Stackable] The max stackable count of %s is %s (Default: %s)",
+//                    item.getTranslationKey(),
+//                    itemsHelper.getCurrentCount(item),
+//                    itemsHelper.getDefaultCount(item))
+//            );
         }
         return 1;
     }
@@ -78,11 +78,11 @@ public class SetMaxCommand {
         if (count > 64) {
             source.sendError(new TranslatableText("as.command.error_exceeded"));
 
-            LOG.info(
-                    "[All Stackable] %s tried to set stack size of %s more than 64",
-                    source.getEntity() instanceof ServerPlayerEntity ? source.getName() : "Server",
-                    item.getTranslationKey()
-            );
+//            LOG.info(
+//                    "[All Stackable] %s tried to set stack size of %s more than 64",
+//                    source.getEntity() instanceof ServerPlayerEntity ? source.getName() : "Server",
+//                    item.getTranslationKey()
+//            );
 
             return 0;
         } else {
@@ -138,7 +138,7 @@ public class SetMaxCommand {
 
             source.sendError(new TranslatableText("as.command.error_empty_hand", u1.equals(u2) ? new TranslatableText("as.command.you") : serverPlayerEntity.getName()));
 
-            LOG.info(String.format("%s has nothing on the main hand!", u1));
+//            LOG.info(String.format("%s has nothing on the main hand!", u1));
 
             return null;
         }

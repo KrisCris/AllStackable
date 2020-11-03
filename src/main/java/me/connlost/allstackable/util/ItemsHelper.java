@@ -30,13 +30,13 @@ public class ItemsHelper {
             Item item = itemEntry.getValue();
             ((IItemMaxCount) item).revert();
         }
-        if (serverSide) LOG.info("[All Stackable] All Reset!");
-        else LOG.info("[All Stackable] [Client] Reset");
+//        if (serverSide) LOG.info("[All Stackable] All Reset!");
+//        else LOG.info("[All Stackable] [Client] Reset");
     }
 
     public void resetItem(Item item) {
         setSingle(item, getDefaultCount(item));
-        LOG.info("[All Stackable] Reset " + item.toString());
+//        LOG.info("[All Stackable] Reset " + item.toString());
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet, boolean serverSide) {
@@ -63,7 +63,7 @@ public class ItemsHelper {
 
     public void setSingle(Item item, int count) {
         ((IItemMaxCount) item).setMaxCount(count);
-        LOG.info("[All Stackable] Set " + item.toString() + " to " + count);
+//        LOG.info("[All Stackable] Set " + item.toString() + " to " + count);
     }
 
     public LinkedList<Item> getAllModifiedItem() {

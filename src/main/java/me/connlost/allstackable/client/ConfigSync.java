@@ -17,6 +17,6 @@ public class ConfigSync {
 
     public static void resetConfig(){
         itemsHelper.resetAll(false);
-        LOG.info("[All Stackable][Client] Config reset!");
+//        LOG.info("[All Stackable][Client] Config reset!");
     }
 }
