@@ -11,7 +11,8 @@
     "MixinSuspiciousStewItem",
     "MixinBucketItem",
     "MixinMilkBucketItem",
-    "MixinItemStack"
+    "MixinItemStack",
+    "MixinCauldronBlock"
   ],
   "client": [
     "MixinMinecraftClientGame"
