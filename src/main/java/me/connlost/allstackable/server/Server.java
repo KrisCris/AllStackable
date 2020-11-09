@@ -15,7 +15,7 @@ public class Server {
 
     public static void onServerLoaded(MinecraftServer ms){
         minecraft_server = ms;
-        config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("all_stackable.json").toFile());
+        config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("allstackable-config.json").toFile());
         config_manager.setupConfig();
         LOG.info("[All Stackable] Loaded!");
     }
