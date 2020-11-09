@@ -20,13 +20,10 @@ import net.minecraft.text.TranslatableText;
 
 import java.util.LinkedList;
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
-
 public class StackSizeCommand {
 
     private static ItemsHelper itemsHelper = ItemsHelper.getItemsHelper();
     private static ConfigManager configManager = ConfigManager.getConfigManager();
-
 
     private static int showItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
         source.sendFeedback(new TranslatableText("as.command.show_item",
@@ -114,9 +111,9 @@ public class StackSizeCommand {
         return 1;
     }
 
-    private static int resetAll(ServerCommandSource source) {
+    private static int resetAllItems(ServerCommandSource source) {
         itemsHelper.resetAll(true);
-        configManager.resetAll();
+        configManager.resetAllItems();
         source.sendFeedback(new TranslatableText("as.command.reset_all",
                 source.getName()), true);
         return 1;
@@ -174,7 +171,7 @@ public class StackSizeCommand {
                                             .executes(ctx -> resetItemOnHand(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"))))
                             )
                             .then(literal("all")
-                                    .executes(ctx -> resetAll(ctx.getSource()))
+                                    .executes(ctx -> resetAllItems(ctx.getSource()))
                             )
                             .then(argument("item", ItemStackArgumentType.itemStack())
                                     .executes(ctx -> resetItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
