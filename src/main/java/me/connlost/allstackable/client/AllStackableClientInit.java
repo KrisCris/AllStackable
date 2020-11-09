@@ -6,6 +6,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.minecraft.network.PacketByteBuf;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -22,8 +24,7 @@ public class AllStackableClientInit implements ClientModInitializer {
     }
 
     private static void configHandler(PacketContext packetContext, PacketByteBuf packetByteBuf) {
-        LinkedHashMap<String, Integer> configMap = SerializationUtils.deserialize(packetByteBuf.readByteArray());
-        ConfigSync.syncConfig(configMap);
-
+        ArrayList<LinkedHashMap<String, Integer>> configList = SerializationUtils.deserialize(packetByteBuf.readByteArray());
+        ConfigSync.syncConfig(configList);
     }
 }

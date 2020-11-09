@@ -1,9 +1,8 @@
 package me.connlost.allstackable.server.config;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -18,16 +17,13 @@ final public class ConfigManager {
     private static ConfigManager cm;
     private File configFile;
     private Gson gson;
-    private Map<String,Integer> configMap;
+//    private LinkedHashMap<String,Integer> itemsMap;
+//    private LinkedHashMap<String, Integer> rulesMap;
     private ItemsHelper itemsHelper;
+    private ArrayList<LinkedHashMap<String, Integer>> configList;
 
-    public static boolean allowItemShulkerStack = false;
-
-    private ConfigManager(){
-        configMap = new LinkedHashMap<>();
-        gson = new Gson();
-        itemsHelper = ItemsHelper.getItemsHelper();
-    }
+    @Deprecated
+    public static boolean allowItemShulkerStack = true;
 
     public static ConfigManager getConfigManager(){
         if (cm == null){
@@ -36,12 +32,41 @@ final public class ConfigManager {
         return cm;
     }
 
-    public Set<Map.Entry<String, Integer>> getConfigEntry(){
-        return configMap.entrySet();
+    private ConfigManager(){
+        initConfigList();
+        gson = new Gson();
+        itemsHelper = ItemsHelper.getItemsHelper();
+    }
+
+    private void initConfigList(){
+        LinkedHashMap<String,Integer> itemsMap = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> rulesMap = setupRulesMap();
+        configList = new ArrayList<>();
+        configList.add(itemsMap);
+        configList.add(rulesMap);
+    }
+
+    public LinkedHashMap<String, Integer> setupRulesMap(){
+        LinkedHashMap<String, Integer> m = new LinkedHashMap<>();
+        m.put("stackEmptyShulkerBoxOnly", 0);
+        return m;
+    }
+
+    public int getRuleSetting(String str){
+        if (configList.get(1).containsKey(str)){
+            return configList.get(1).get(str);
+        } else {
+            LOG.error("No such rule key");
+            return -1;
+        }
+    }
+
+    public void setRulesMap(LinkedHashMap<String, Integer> newRules){
+        this.configList.set(1,newRules);
     }
 
     public byte[] getSerializedConfig(){
-        return SerializationUtils.serialize((Serializable) configMap);
+        return SerializationUtils.serialize((Serializable) configList);
     }
 
     public void passConfigFile(File f){
@@ -50,25 +75,40 @@ final public class ConfigManager {
 
     public void setupConfig(){
         loadConfig();
-        itemsHelper.setCountByConfig(this.configMap.entrySet(),true);
+        itemsHelper.setCountByConfig(this.configList.get(0).entrySet(),true);
         NetworkHelper.sentConfigToAll();
         LOG.info("[All Stackable] Config Loaded");
     }
 
-    public Map<String, Integer> loadConfig(){
+    public ArrayList<LinkedHashMap<String, Integer>> loadConfig(){
         if (this.configFile.exists()){
             try (FileReader reader = new FileReader(this.configFile)){
-                configMap = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
+                configList = gson.fromJson(reader, new TypeToken<ArrayList<LinkedHashMap<String, Integer>>>(){}.getType());
+//                itemsMap = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
             } catch (IOException e) {
                 LOG.error("[All Stackable] Failed to parse config");
                 throw new RuntimeException("[All Stackable] Could not parse config", e);
             }
         } else {
-            this.configMap.clear();
+            initConfigList();
+            // for those old users
+            String path = this.configFile.getAbsolutePath();
+            String oldPath = path.substring(0, path.length()-"allstackable-config.json".length())+"all_stackable.json";
+            System.out.println(oldPath);
+            File oldFile = new File(oldPath);
+            if (oldFile.exists()){
+                try (FileReader reader = new FileReader(oldFile)){
+                configList.set(0, gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType()));
+                } catch (IOException e) {
+                    LOG.error("[All Stackable] Failed to parse old config");
+                    throw new RuntimeException("[All Stackable] Could not parse config", e);
+                }
+            }
+            //
             writeConfig();
         }
 
-        return configMap;
+        return configList;
     }
 
     private void writeConfig(){
@@ -85,22 +125,22 @@ final public class ConfigManager {
         }
 
         try (FileWriter writer = new FileWriter(configFile)) {
-            gson.toJson(configMap, writer);
+            gson.toJson(configList, writer);
         } catch (IOException e) {
             LOG.error("[AllStackable] Failed to save config");
             throw new RuntimeException("[AllStackable] Could not save config file", e);
         }
     }
 
-    public Map<String, Integer> syncConfig(){
-        configMap = itemsHelper.getNewConfigMap();
+    public ArrayList<LinkedHashMap<String, Integer>> syncConfig(){
+        configList.set(0, itemsHelper.getNewConfigMap());
         writeConfig();
         NetworkHelper.sentConfigToAll();
-        return configMap;
+        return configList;
     }
 
-    public void resetAll(){
-        configMap.clear();
+    public void resetAllItems(){
+        configList.get(0).clear();
         writeConfig();
         NetworkHelper.sentConfigToAll();
     }

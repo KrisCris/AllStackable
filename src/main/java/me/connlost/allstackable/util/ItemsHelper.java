@@ -1,8 +1,12 @@
 package me.connlost.allstackable.util;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -123,4 +127,21 @@ public class ItemsHelper {
         return bet.contains("Items", TAG_LIST) && !bet.getList("Items", TAG_COMPOUND).isEmpty();
     }
 
+    public static void insertNewItem(PlayerEntity player, Hand hand, ItemStack stack1, ItemStack stack2) {
+        if (stack1.isEmpty()){
+            player.setStackInHand(hand, stack2);
+        } else if (!player.inventory.insertStack(stack2)) {
+            player.dropItem(stack2, false);
+        } else if (player instanceof ServerPlayerEntity) {
+            ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
+        }
+    }
+
+    public static void insertNewItem(PlayerEntity player, ItemStack stack2) {
+        if (!player.inventory.insertStack(stack2)) {
+            player.dropItem(stack2, false);
+        } else if (player instanceof ServerPlayerEntity) {
+            ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
+        }
+    }
 }

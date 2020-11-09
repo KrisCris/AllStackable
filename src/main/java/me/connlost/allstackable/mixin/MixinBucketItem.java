@@ -1,5 +1,6 @@
 package me.connlost.allstackable.mixin;
 
+import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ public class MixinBucketItem {
     @Inject(method = "getEmptiedStack", at = @At(value = "HEAD"), cancellable = true)
     public void stackableBucket(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ItemStack> cir){
             if (stack.getCount() > 1 && !player.abilities.creativeMode){
-                player.inventory.insertStack(new ItemStack(Items.BUCKET));
+                ItemsHelper.insertNewItem(player, new ItemStack(Items.BUCKET));
                 stack.decrement(1);
                 cir.setReturnValue(stack);
             }
