@@ -1,5 +1,6 @@
 package me.connlost.allstackable.mixin;
 
+import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ public class MixinMilkBucketItem {
             if (!world.isClient)
                 user.clearStatusEffects();
             if (user instanceof PlayerEntity){
-                ((PlayerEntity)user).inventory.insertStack(new ItemStack(Items.BUCKET));
+                ItemsHelper.insertNewItem((PlayerEntity)user, new ItemStack(Items.BUCKET));
                 cir.setReturnValue(stack);
             }
         }

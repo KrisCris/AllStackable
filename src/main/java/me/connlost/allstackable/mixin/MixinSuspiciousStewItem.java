@@ -1,5 +1,6 @@
 package me.connlost.allstackable.mixin;
 
+import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ public class MixinSuspiciousStewItem {
     private void stackableStew(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
         if (stack.getCount() > 0) {
             if (user instanceof PlayerEntity) {
-                ((PlayerEntity) user).inventory.insertStack(new ItemStack(Items.BOWL));
+                ItemsHelper.insertNewItem((PlayerEntity)user, new ItemStack(Items.BOWL));
             }
             cir.setReturnValue(stack);
         }
