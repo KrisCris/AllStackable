@@ -21,6 +21,8 @@ final public class ConfigManager {
     private Map<String,Integer> configMap;
     private ItemsHelper itemsHelper;
 
+    public static boolean allowItemShulkerStack = false;
+
     private ConfigManager(){
         configMap = new LinkedHashMap<>();
         gson = new Gson();
