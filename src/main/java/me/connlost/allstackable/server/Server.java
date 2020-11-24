@@ -5,6 +5,9 @@ import me.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+
+import java.io.File;
+
 import static me.connlost.allstackable.AllStackableInit.LOG;
 
 
@@ -14,8 +17,8 @@ public class Server {
 
     public static void onServerLoaded(MinecraftServer ms){
         minecraft_server = ms;
-        System.out.println(minecraft_server.getLevelStorage().getSavesDirectory());
-        config_manager.passConfigFile(minecraft_server.getLevelStorage().getSavesDirectory().resolve("allstackable-config.json").toFile());
+        File file = minecraft_server.getLevelStorage().resolveFile(minecraft_server.getLevelName(),"allstackable-config.json");
+        config_manager.passConfigFile(file);
         config_manager.setupConfig();
         LOG.info("[All Stackable] Loaded!");
     }

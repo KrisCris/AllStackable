@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MixinMinecraftServer {
 
-    @Inject(method = "loadWorld", at = @At("HEAD"))
+    //dedicated only
+    @Inject(method = "loadWorld", at = @At("RETURN"))
     private void serverLoaded(CallbackInfo ci)
     {
         Server.onServerLoaded((MinecraftServer) (Object) this);
-        System.out.println("loaded");
     }
 }

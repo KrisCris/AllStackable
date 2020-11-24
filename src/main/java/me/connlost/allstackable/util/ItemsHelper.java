@@ -86,8 +86,7 @@ public class ItemsHelper {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         for (Identifier id : getItemSet()) {
             Item item = Registry.ITEM.get(id);
-            String sid = id.getPath();
-            System.out.println(sid);
+            String sid = id.toString();
             if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(sid)) {
                 map.put(sid, item.getMaxCount());
             }
