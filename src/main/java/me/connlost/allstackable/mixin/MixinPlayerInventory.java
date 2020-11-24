@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Deprecated
@@ -24,5 +25,13 @@ public class MixinPlayerInventory {
                 }
             }
         }
+    }
+
+    @Redirect(
+            method = "insertStack(ILnet/minecraft/item/ItemStack;)Z",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamaged()Z", ordinal = 0)
+    )
+    private boolean fixToolStack(ItemStack stack){
+        return stack.isStackable();
     }
 }
