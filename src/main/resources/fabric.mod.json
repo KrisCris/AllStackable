@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "allstackable",
-  "version": "1.2.6",
+  "version": "${version}",
 
   "name": "All Stackable",
   "description": "Try using 10 Bows at a time! (x)",
@@ -30,9 +30,9 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.4.0",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.14.x"
   },
   "suggests": {
     "flamingo": "*"

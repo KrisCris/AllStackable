@@ -10,8 +10,8 @@ import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
 
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.ItemStackArgumentType;
+import net.minecraft.command.arguments.EntityArgumentType;
+import net.minecraft.command.arguments.ItemStackArgumentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;

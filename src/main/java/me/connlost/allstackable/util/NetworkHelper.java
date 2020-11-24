@@ -5,9 +5,8 @@ import me.connlost.allstackable.AllStackableInit;
 import me.connlost.allstackable.server.Server;
 import me.connlost.allstackable.server.config.ConfigManager;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-
+import net.minecraft.util.PacketByteBuf;
 import java.util.List;
 
 import static me.connlost.allstackable.AllStackableInit.LOG;

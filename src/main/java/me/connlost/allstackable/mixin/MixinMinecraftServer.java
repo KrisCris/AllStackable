@@ -14,5 +14,6 @@ public abstract class MixinMinecraftServer {
     private void serverLoaded(CallbackInfo ci)
     {
         Server.onServerLoaded((MinecraftServer) (Object) this);
+        System.out.println("loaded");
     }
 }

@@ -1,15 +1,14 @@
 package me.connlost.allstackable.util;
 
+import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -32,8 +31,8 @@ public class ItemsHelper {
     }
 
     public void resetAll(boolean serverSide) {
-        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-            Item item = itemEntry.getValue();
+        for (Identifier id : getItemSet()) {
+            Item item = Registry.ITEM.get(id);
             ((IItemMaxCount) item).revert();
         }
 //        if (serverSide) LOG.info("[All Stackable] All Reset!");
@@ -74,8 +73,8 @@ public class ItemsHelper {
 
     public LinkedList<Item> getAllModifiedItem() {
         LinkedList<Item> list = new LinkedList<>();
-        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-            Item item = itemEntry.getValue();
+        for (Identifier id : getItemSet()) {
+            Item item = Registry.ITEM.get(id);
             if (getDefaultCount(item) != getCurrentCount(item) && !list.contains(item)) {
                 list.add(item);
             }
@@ -85,19 +84,20 @@ public class ItemsHelper {
 
     public LinkedHashMap<String, Integer> getNewConfigMap() {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
-        for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-            Item item = itemEntry.getValue();
-            String id = Registry.ITEM.getId(item).toString();
-            if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(id)) {
-                map.put(id, item.getMaxCount());
+        for (Identifier id : getItemSet()) {
+            Item item = Registry.ITEM.get(id);
+            String sid = id.getPath();
+            System.out.println(sid);
+            if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(sid)) {
+                map.put(sid, item.getMaxCount());
             }
         }
         return map;
     }
 
 
-    private Set<Map.Entry<RegistryKey<Item>, Item>> getItemSet() {
-        return Registry.ITEM.getEntries();
+    private Set<Identifier> getItemSet() {
+        return Registry.ITEM.getIds();
     }
 
 
@@ -133,7 +133,7 @@ public class ItemsHelper {
         } else if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
         } else if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
+            ((ServerPlayerEntity) player).openContainer((Container) player.playerContainer);
         }
     }
 
@@ -141,7 +141,7 @@ public class ItemsHelper {
         if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
         } else if (player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
+            ((ServerPlayerEntity) player).openContainer((Container) player.playerContainer);
         }
     }
 }

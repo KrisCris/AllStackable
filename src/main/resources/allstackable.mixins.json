@@ -1,6 +1,6 @@
 {
   "required": true,
-  "minVersion": "0.7",
+  "minVersion": "0.6",
   "package": "me.connlost.allstackable.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [

@@ -4,7 +4,6 @@ import me.connlost.allstackable.server.config.ConfigManager;
 import me.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.WorldSavePath;
 
 import static me.connlost.allstackable.AllStackableInit.LOG;
 
@@ -15,7 +14,8 @@ public class Server {
 
     public static void onServerLoaded(MinecraftServer ms){
         minecraft_server = ms;
-        config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("allstackable-config.json").toFile());
+        System.out.println(minecraft_server.getLevelStorage().getSavesDirectory());
+        config_manager.passConfigFile(minecraft_server.getLevelStorage().getSavesDirectory().resolve("allstackable-config.json").toFile());
         config_manager.setupConfig();
         LOG.info("[All Stackable] Loaded!");
     }

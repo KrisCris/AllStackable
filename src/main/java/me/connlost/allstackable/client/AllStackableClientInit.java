@@ -5,8 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.PacketContext;
-import net.minecraft.network.PacketByteBuf;
-
+import net.minecraft.util.PacketByteBuf;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
