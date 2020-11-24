@@ -17,8 +17,6 @@ final public class ConfigManager {
     private static ConfigManager cm;
     private File configFile;
     private Gson gson;
-//    private LinkedHashMap<String,Integer> itemsMap;
-//    private LinkedHashMap<String, Integer> rulesMap;
     private ItemsHelper itemsHelper;
     private ArrayList<LinkedHashMap<String, Integer>> configList;
 
