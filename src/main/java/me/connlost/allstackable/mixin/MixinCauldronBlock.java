@@ -34,7 +34,7 @@ public class MixinCauldronBlock {
     public static final IntProperty LEVEL = Properties.LEVEL_3;
 
     //tried to simply redirect the setStackInHand method... But failed and no idea why.
-    @Inject(method = "activate", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "onUse", at = @At(value = "HEAD"), cancellable = true)
     private void fixMojangStupidity(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (itemStack.isEmpty()) {
