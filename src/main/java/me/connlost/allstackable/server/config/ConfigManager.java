@@ -92,9 +92,9 @@ final public class ConfigManager {
             // for those old users
             String path = this.configFile.getAbsolutePath();
             String oldPath = path.substring(0, path.length()-"allstackable-config.json".length())+"all_stackable.json";
-            System.out.println(oldPath);
             File oldFile = new File(oldPath);
             if (oldFile.exists()){
+                LOG.info("[All Stackable] Find config file for older version of AllStackable, converting!");
                 try (FileReader reader = new FileReader(oldFile)){
                 configList.set(0, gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType()));
                 } catch (IOException e) {
