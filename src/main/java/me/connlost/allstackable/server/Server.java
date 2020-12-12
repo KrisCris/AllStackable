@@ -24,4 +24,5 @@ public class Server {
         NetworkHelper.sentConfigToPlayer(player);
     }
 
+
 }

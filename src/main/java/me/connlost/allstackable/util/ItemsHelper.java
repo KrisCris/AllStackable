@@ -130,7 +130,7 @@ public class ItemsHelper {
     public static void insertNewItem(PlayerEntity player, Hand hand, ItemStack stack1, ItemStack stack2) {
         if (stack1.isEmpty()){
             player.setStackInHand(hand, stack2);
-        } else if (!player.inventory.insertStack(stack2)) {
+        } else if (!player.getInventory().insertStack(stack2)) {
             player.dropItem(stack2, false);
         } else if (player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
@@ -138,7 +138,7 @@ public class ItemsHelper {
     }
 
     public static void insertNewItem(PlayerEntity player, ItemStack stack2) {
-        if (!player.inventory.insertStack(stack2)) {
+        if (!player.getInventory().insertStack(stack2)) {
             player.dropItem(stack2, false);
         } else if (player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);

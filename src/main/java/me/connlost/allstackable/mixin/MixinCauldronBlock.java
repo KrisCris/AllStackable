@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static me.connlost.allstackable.util.ItemsHelper.insertNewItem;
 
-@Mixin(CauldronBlock.class)
+@Mixin(AbstractCauldronBlock.class)
 public class MixinCauldronBlock {
 
     @Shadow
@@ -44,7 +44,7 @@ public class MixinCauldronBlock {
         Item item = itemStack.getItem();
         if (item == Items.WATER_BUCKET) {
             if (i < 3 && !world.isClient) {
-                if (!player.abilities.creativeMode) {
+                if (!player.getAbilities().creativeMode) {
                     itemStack.decrement(1);
                 }
                 insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
@@ -57,7 +57,7 @@ public class MixinCauldronBlock {
 
         if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
             if (i < 3 && !world.isClient) {
-                if (!player.abilities.creativeMode) {
+                if (!player.getAbilities().creativeMode) {
                     player.incrementStat(Stats.USE_CAULDRON);
                     itemStack.decrement(1);
                     insertNewItem(player,hand,itemStack, new ItemStack(Items.GLASS_BOTTLE,1));

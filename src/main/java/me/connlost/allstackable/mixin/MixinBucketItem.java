@@ -15,7 +15,7 @@ public class MixinBucketItem {
 
     @Inject(method = "getEmptiedStack", at = @At(value = "HEAD"), cancellable = true)
     public void stackableBucket(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ItemStack> cir){
-            if (stack.getCount() > 1 && !player.abilities.creativeMode){
+            if (stack.getCount() > 1 && !player.getAbilities().creativeMode){
                 ItemsHelper.insertNewItem(player, new ItemStack(Items.BUCKET));
                 stack.decrement(1);
                 cir.setReturnValue(stack);
