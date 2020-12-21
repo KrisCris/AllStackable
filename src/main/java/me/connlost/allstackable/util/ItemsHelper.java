@@ -132,15 +132,18 @@ public class ItemsHelper {
             player.setStackInHand(hand, stack2);
         } else if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
-        } else if (player instanceof ServerPlayerEntity) {
+        }
+        if (player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
         }
     }
 
     public static void insertNewItem(PlayerEntity player, ItemStack stack2) {
+        System.out.println("insert:"+stack2.getCount());
         if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
-        } else if (player instanceof ServerPlayerEntity) {
+        }
+        if (player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).refreshScreenHandler((ScreenHandler) player.playerScreenHandler);
         }
     }
