@@ -1,5 +1,6 @@
 package me.connlost.allstackable.mixin;
 
+import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -37,52 +38,55 @@ public class MixinCauldronBlock {
     @Inject(method = "activate", at = @At(value = "HEAD"), cancellable = true)
     private void fixMojangStupidity(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.isEmpty()) {
-            cir.setReturnValue(true);
-        } else {
-            int i = (Integer) state.get(LEVEL);
-            Item item = itemStack.getItem();
-
-            if (item == Items.WATER_BUCKET) {
-                if (i < 3 && !world.isClient) {
-                    if (!player.abilities.creativeMode) {
-                        itemStack.decrement(1);
-                    }
-                    insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
-                    player.incrementStat(Stats.FILL_CAULDRON);
-                    setLevel(world, pos, state, 3);
-                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                }
+        if (ItemsHelper.isModified(itemStack)) {
+            if (itemStack.isEmpty()) {
                 cir.setReturnValue(true);
-            } else if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
-                if (i < 3 && !world.isClient) {
-                    if (!player.abilities.creativeMode) {
-                        player.incrementStat(Stats.USE_CAULDRON);
-                        itemStack.decrement(1);
-                        insertNewItem(player, hand, itemStack, new ItemStack(Items.GLASS_BOTTLE, 1));
-                        if (player instanceof ServerPlayerEntity) {
-                            ((ServerPlayerEntity) player).openContainer(player.playerContainer);
+            } else {
+                int i = (Integer) state.get(LEVEL);
+                Item item = itemStack.getItem();
+
+                if (item == Items.WATER_BUCKET) {
+                    if (i < 3 && !world.isClient) {
+                        if (!player.abilities.creativeMode) {
+                            itemStack.decrement(1);
                         }
+                        insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
+                        player.incrementStat(Stats.FILL_CAULDRON);
+                        setLevel(world, pos, state, 3);
+                        world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     }
-                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    setLevel(world, pos, state, i + 1);
-                }
-                cir.setReturnValue(true);
-            } else if (i > 0 && item instanceof BlockItem) {
-                Block block = ((BlockItem) item).getBlock();
-                if (block instanceof ShulkerBoxBlock && !world.isClient()) {
-                    ItemStack itemStack5 = new ItemStack(Blocks.SHULKER_BOX, 1);
-                    if (itemStack.hasTag()) {
-                        itemStack5.setTag(itemStack.getTag().copy());
-                    }
-
-                    itemStack.decrement(1);
-                    insertNewItem(player, hand, itemStack, itemStack5);
-                    setLevel(world, pos, state, i - 1);
-                    player.incrementStat(Stats.CLEAN_SHULKER_BOX);
                     cir.setReturnValue(true);
+                } else if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
+                    if (i < 3 && !world.isClient) {
+                        if (!player.abilities.creativeMode) {
+                            player.incrementStat(Stats.USE_CAULDRON);
+                            itemStack.decrement(1);
+                            insertNewItem(player, hand, itemStack, new ItemStack(Items.GLASS_BOTTLE, 1));
+                            if (player instanceof ServerPlayerEntity) {
+                                ((ServerPlayerEntity) player).openContainer(player.playerContainer);
+                            }
+                        }
+                        world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                        setLevel(world, pos, state, i + 1);
+                    }
+                    cir.setReturnValue(true);
+                } else if (i > 0 && item instanceof BlockItem) {
+                    Block block = ((BlockItem) item).getBlock();
+                    if (block instanceof ShulkerBoxBlock && !world.isClient()) {
+                        ItemStack itemStack5 = new ItemStack(Blocks.SHULKER_BOX, 1);
+                        if (itemStack.hasTag()) {
+                            itemStack5.setTag(itemStack.getTag().copy());
+                        }
+
+                        itemStack.decrement(1);
+                        insertNewItem(player, hand, itemStack, itemStack5);
+                        setLevel(world, pos, state, i - 1);
+                        player.incrementStat(Stats.CLEAN_SHULKER_BOX);
+                        cir.setReturnValue(true);
+                    }
                 }
             }
+
 
         }
 
