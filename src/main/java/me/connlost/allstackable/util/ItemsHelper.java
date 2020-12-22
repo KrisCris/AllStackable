@@ -36,13 +36,10 @@ public class ItemsHelper {
             Item item = itemEntry.getValue();
             ((IItemMaxCount) item).revert();
         }
-//        if (serverSide) LOG.info("All Reset!");
-//        else LOG.info("[Client] Reset");
     }
 
     public void resetItem(Item item) {
         setSingle(item, getDefaultCount(item));
-//        LOG.info("Reset " + item.toString());
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet, boolean serverSide) {
@@ -67,12 +64,16 @@ public class ItemsHelper {
         return item.getMaxCount();
     }
 
-    public void setSingle(Item item, int count) {
-        ((IItemMaxCount) item).setMaxCount(count);
-//        LOG.info("Set " + item.toString() + " to " + count);
+    public boolean isVanilla(Item item) {
+        if (getDefaultCount(item) == getCurrentCount(item)) return true;
+        else return false;
     }
 
-    public LinkedList<Item> getAllModifiedItem() {
+    public void setSingle(Item item, int count) {
+        ((IItemMaxCount) item).setMaxCount(count);
+    }
+
+    public LinkedList<Item> getAllModifiedItems() {
         LinkedList<Item> list = new LinkedList<>();
         for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
             Item item = itemEntry.getValue();
@@ -81,6 +82,37 @@ public class ItemsHelper {
             }
         }
         return list;
+    }
+
+    public int setMatchedItems(int originalSize, int newSize, String type) {
+        int counter = 0;
+        if (type.equals("vanilla")){
+            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                Item item = itemEntry.getValue();
+                if (isVanilla(item) && getCurrentCount(item) == originalSize){
+                    setSingle(item, newSize);
+                    counter ++;
+                }
+            }
+        } else if (type.equals("modified")){
+            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                Item item = itemEntry.getValue();
+                if (!isVanilla(item) && getCurrentCount(item) == originalSize){
+                    setSingle(item, newSize);
+                    counter ++;
+                }
+            }
+        } else if (type.equals("all")){
+            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                Item item = itemEntry.getValue();
+                if (getCurrentCount(item) == originalSize){
+                    setSingle(item, newSize);
+                    counter ++;
+                }
+            }
+        }
+
+        return counter;
     }
 
     public LinkedHashMap<String, Integer> getNewConfigMap() {
@@ -102,22 +134,21 @@ public class ItemsHelper {
 
 
     // From nbt/Tag.java createTag()
-    public static final int TAG_END         = 0;
-    public static final int TAG_BYTE        = 1;
-    public static final int TAG_SHORT       = 2;
-    public static final int TAG_INT         = 3;
-    public static final int TAG_LONG        = 4;
-    public static final int TAG_FLOAT       = 5;
-    public static final int TAG_DOUBLE      = 6;
-    public static final int TAG_BYTEARRAY   = 7;
-    public static final int TAG_STRING      = 8;
-    public static final int TAG_LIST        = 9;
-    public static final int TAG_COMPOUND    = 10;
-    public static final int TAG_INTARRAY    = 11;
-    public static final int TAG_LONGARRAY   = 12;
+    public static final int TAG_END = 0;
+    public static final int TAG_BYTE = 1;
+    public static final int TAG_SHORT = 2;
+    public static final int TAG_INT = 3;
+    public static final int TAG_LONG = 4;
+    public static final int TAG_FLOAT = 5;
+    public static final int TAG_DOUBLE = 6;
+    public static final int TAG_BYTEARRAY = 7;
+    public static final int TAG_STRING = 8;
+    public static final int TAG_LIST = 9;
+    public static final int TAG_COMPOUND = 10;
+    public static final int TAG_INTARRAY = 11;
+    public static final int TAG_LONGARRAY = 12;
 
-    public static boolean shulkerBoxHasItems(ItemStack stack)
-    {
+    public static boolean shulkerBoxHasItems(ItemStack stack) {
         CompoundTag tag = stack.getTag();
 
         if (tag == null || !tag.contains("BlockEntityTag", TAG_COMPOUND))
@@ -128,7 +159,7 @@ public class ItemsHelper {
     }
 
     public static void insertNewItem(PlayerEntity player, Hand hand, ItemStack stack1, ItemStack stack2) {
-        if (stack1.isEmpty()){
+        if (stack1.isEmpty()) {
             player.setStackInHand(hand, stack2);
         } else if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
@@ -147,11 +178,11 @@ public class ItemsHelper {
         }
     }
 
-    public static boolean isModified(ItemStack s){
-        if (s.isEmpty()){
+    public static boolean isModified(ItemStack s) {
+        if (s.isEmpty()) {
             return false;
         }
         Item i = s.getItem();
-        return (((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount())&&s.getCount()>1;
+        return (((IItemMaxCount) i).getVanillaMaxCount() != i.getMaxCount()) && s.getCount() > 1;
     }
 }

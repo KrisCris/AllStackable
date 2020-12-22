@@ -36,7 +36,7 @@ public class MixinCauldronBlock {
     public static final IntProperty LEVEL = Properties.LEVEL_3;
 
     @Inject(method = "onUse", at = @At(value = "HEAD"), cancellable = true)
-    private void fixMojangStupidity(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+    private void fixCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (ItemsHelper.isModified(itemStack)){
             if (itemStack.isEmpty())
