@@ -5,6 +5,7 @@ import me.connlost.allstackable.util.IItemMaxCount;
 import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,10 +34,16 @@ public class MixinItemStack {
 
     @Redirect(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setDamage(I)V"))
     private void splitStackedTools(ItemStack stack, int damage, int amount, Random random, ServerPlayerEntity player){
-        ItemStack rest = stack.copy();
-        rest.decrement(1);
-        stack.setCount(1);
+        Item i = stack.getItem();
+        ItemStack rest = null;
+        if (stack.getCount()>1 && ((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount()){
+            rest = stack.copy();
+            rest.decrement(1);
+            stack.setCount(1);
+        }
         stack.setDamage(damage);
-        ItemsHelper.insertNewItem(player,rest);
+        if (rest != null){
+            ItemsHelper.insertNewItem(player,rest);
+        }
     }
 }
