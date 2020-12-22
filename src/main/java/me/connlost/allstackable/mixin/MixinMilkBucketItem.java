@@ -17,7 +17,7 @@ public class MixinMilkBucketItem {
 
     @Inject(method = "finishUsing", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/item/ItemStack;decrement(I)V"), cancellable = true)
     private void stackableMilkBucket(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir){
-        if (!stack.isEmpty()){
+        if (!stack.isEmpty() && ItemsHelper.isModified(stack)){
             if (!world.isClient)
                 user.clearStatusEffects();
             if (user instanceof PlayerEntity){

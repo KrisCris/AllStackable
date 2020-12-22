@@ -34,9 +34,8 @@ public class MixinItemStack {
 
     @Redirect(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setDamage(I)V"))
     private void splitStackedTools(ItemStack stack, int damage, int amount, Random random, ServerPlayerEntity player){
-        Item i = stack.getItem();
         ItemStack rest = null;
-        if (stack.getCount()>1 && ((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount() && player!=null){
+        if (stack.getCount()>1 && ItemsHelper.isModified(stack) && player!=null){
             rest = stack.copy();
             rest.decrement(1);
             stack.setCount(1);
