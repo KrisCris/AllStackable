@@ -57,17 +57,12 @@ public class StackSizeCommand {
     }
 
     private static int setItem(ServerCommandSource source, Item item, int count) throws CommandSyntaxException {
-//        if (count > 64) {
-//            source.sendError(new TranslatableText("as.command.error_exceeded"));
-//            return 0;
-//        } else {
-            itemsHelper.setSingle(item, count);
-            configManager.syncConfig();
-            source.sendFeedback(new TranslatableText("as.command.set_item",
-                    new TranslatableText(item.getTranslationKey()),
-                    count,
-                    itemsHelper.getDefaultCount(item)), true);
-//        }
+        itemsHelper.setSingle(item, count);
+        configManager.syncConfig();
+        source.sendFeedback(new TranslatableText("as.command.set_item",
+                new TranslatableText(item.getTranslationKey()),
+                count,
+                itemsHelper.getDefaultCount(item)), true);
         return 1;
     }
 
@@ -79,7 +74,7 @@ public class StackSizeCommand {
         return setItem(source, item, count);
     }
 
-    private static int setMatched(ServerCommandSource source, String type, int originalSize, int newSize){
+    private static int setMatched(ServerCommandSource source, String type, int originalSize, int newSize) {
         int count = itemsHelper.setMatchedItems(originalSize, newSize, type);
         configManager.syncConfig();
         source.sendFeedback(
@@ -168,7 +163,7 @@ public class StackSizeCommand {
                     )
                     .then(literal("set")
                             .then(argument("item", ItemStackArgumentType.itemStack())
-                                    .then(argument("count", IntegerArgumentType.integer(1))
+                                    .then(argument("count", IntegerArgumentType.integer(1, 64))
                                             .executes(ctx -> setItem(
                                                     ctx.getSource(),
                                                     ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem(),
@@ -176,7 +171,7 @@ public class StackSizeCommand {
                             )
                             .then(literal("hand")
                                     .then(argument("targets", EntityArgumentType.player())
-                                            .then(argument("count", IntegerArgumentType.integer(1))
+                                            .then(argument("count", IntegerArgumentType.integer(1, 64))
                                                     .executes(ctx -> setItemOnHand(
                                                             ctx.getSource(),
                                                             EntityArgumentType.getPlayer(ctx, "targets"),
@@ -184,36 +179,36 @@ public class StackSizeCommand {
                                     )
                             )
                             .then(literal("vanilla")
-                                    .then(argument("vanillaSize", IntegerArgumentType.integer(1))
-                                            .then(argument("customSize", IntegerArgumentType.integer(1))
+                                    .then(argument("vanillaSize", IntegerArgumentType.integer(1, 64))
+                                            .then(argument("customSize", IntegerArgumentType.integer(1, 64))
                                                     .executes(ctx -> setMatched(
                                                             ctx.getSource(),
                                                             "vanilla",
-                                                            IntegerArgumentType.getInteger(ctx,"vanillaSize"),
+                                                            IntegerArgumentType.getInteger(ctx, "vanillaSize"),
                                                             IntegerArgumentType.getInteger(ctx, "customSize")
                                                     ))
                                             )
                                     )
                             )
                             .then(literal("modified")
-                                    .then(argument("previousSize", IntegerArgumentType.integer(1))
-                                            .then(argument("newSize", IntegerArgumentType.integer(1))
+                                    .then(argument("previousSize", IntegerArgumentType.integer(1, 64))
+                                            .then(argument("newSize", IntegerArgumentType.integer(1, 64))
                                                     .executes(ctx -> setMatched(
                                                             ctx.getSource(),
                                                             "modified",
-                                                            IntegerArgumentType.getInteger(ctx,"previousSize"),
+                                                            IntegerArgumentType.getInteger(ctx, "previousSize"),
                                                             IntegerArgumentType.getInteger(ctx, "newSize")
                                                     ))
                                             )
                                     )
                             )
                             .then(literal("all")
-                                    .then(argument("previousSize", IntegerArgumentType.integer(1))
-                                            .then(argument("newSize", IntegerArgumentType.integer(1))
+                                    .then(argument("previousSize", IntegerArgumentType.integer(1, 64))
+                                            .then(argument("newSize", IntegerArgumentType.integer(1, 64))
                                                     .executes(ctx -> setMatched(
                                                             ctx.getSource(),
                                                             "all",
-                                                            IntegerArgumentType.getInteger(ctx,"previousSize"),
+                                                            IntegerArgumentType.getInteger(ctx, "previousSize"),
                                                             IntegerArgumentType.getInteger(ctx, "newSize")
                                                     ))
                                             )

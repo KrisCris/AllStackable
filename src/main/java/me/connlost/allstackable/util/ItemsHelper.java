@@ -48,12 +48,12 @@ public class ItemsHelper {
         resetAll(serverSide);
         for (Map.Entry<String, Integer> entry : configSet) {
             Item item = Registry.ITEM.get(new Identifier(entry.getKey()));
-
+            int size = Integer.min(entry.getValue(), 64);
             if (serverSide)
-                LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + entry.getValue());
+                LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + size);
             else
-                LOGGER.info("[All Stackable] [Client] Set " + entry.getKey() + " to " + entry.getValue());
-            ((IItemMaxCount) item).setMaxCount(entry.getValue());
+                LOGGER.info("[All Stackable] [Client] Set " + entry.getKey() + " to " + size);
+            ((IItemMaxCount) item).setMaxCount(size);
 
         }
     }
@@ -67,8 +67,7 @@ public class ItemsHelper {
     }
 
     public boolean isVanilla(Item item) {
-        if (getDefaultCount(item) == getCurrentCount(item)) return true;
-        else return false;
+        return getDefaultCount(item) == getCurrentCount(item);
     }
 
     public void setSingle(Item item, int count) {
@@ -89,30 +88,34 @@ public class ItemsHelper {
 
     public int setMatchedItems(int originalSize, int newSize, String type) {
         int counter = 0;
-        if (type.equals("vanilla")){
-            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-                Item item = itemEntry.getValue();
-                if (isVanilla(item) && getCurrentCount(item) == originalSize){
-                    setSingle(item, newSize);
-                    counter ++;
+        switch (type) {
+            case "vanilla":
+                for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                    Item item = itemEntry.getValue();
+                    if (isVanilla(item) && getCurrentCount(item) == originalSize) {
+                        setSingle(item, newSize);
+                        counter++;
+                    }
                 }
-            }
-        } else if (type.equals("modified")){
-            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-                Item item = itemEntry.getValue();
-                if (!isVanilla(item) && getCurrentCount(item) == originalSize){
-                    setSingle(item, newSize);
-                    counter ++;
+                break;
+            case "modified":
+                for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                    Item item = itemEntry.getValue();
+                    if (!isVanilla(item) && getCurrentCount(item) == originalSize) {
+                        setSingle(item, newSize);
+                        counter++;
+                    }
                 }
-            }
-        } else if (type.equals("all")){
-            for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
-                Item item = itemEntry.getValue();
-                if (getCurrentCount(item) == originalSize){
-                    setSingle(item, newSize);
-                    counter ++;
+                break;
+            case "all":
+                for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
+                    Item item = itemEntry.getValue();
+                    if (getCurrentCount(item) == originalSize) {
+                        setSingle(item, newSize);
+                        counter++;
+                    }
                 }
-            }
+                break;
         }
 
         return counter;
