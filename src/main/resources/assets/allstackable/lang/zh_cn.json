@@ -4,7 +4,6 @@
   "as.command.show_none": "不存在被修改的物品",
   "as.command.reset_item": "%s的堆叠上限被重置了",
   "as.command.reset_all": "所有物品的堆叠上限被重置了",
-  "as.command.error_exceeded": "你最多只能将它设置为64",
   "as.command.error_empty_hand": "%s的主手上没有物品",
   "as.command.you": "你",
   "as.command.reloaded": "重新载入了配置文件",

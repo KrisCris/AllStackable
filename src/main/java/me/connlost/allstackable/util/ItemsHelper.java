@@ -48,12 +48,12 @@ public class ItemsHelper {
         resetAll(serverSide);
         for (Map.Entry<String, Integer> entry : configSet) {
             Item item = Registry.ITEM.get(new Identifier(entry.getKey()));
-
+            int size = Integer.min(entry.getValue(), 64);
             if (serverSide)
-                LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + entry.getValue());
+                LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + size);
             else
-                LOGGER.info("[All Stackable] [Client] Set " + entry.getKey() + " to " + entry.getValue());
-            ((IItemMaxCount) item).setMaxCount(entry.getValue());
+                LOGGER.info("[All Stackable] [Client] Set " + entry.getKey() + " to " + size);
+            ((IItemMaxCount) item).setMaxCount(size);
 
         }
     }

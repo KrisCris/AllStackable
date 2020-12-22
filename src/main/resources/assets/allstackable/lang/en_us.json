@@ -4,7 +4,6 @@
   "as.command.show_none": "No item has been modified",
   "as.command.reset_item": "The stack size of %s has been reset",
   "as.command.reset_all": "All items' stack size has been reset",
-  "as.command.error_exceeded": "You could only set it up to 64!",
   "as.command.error_empty_hand": "%s has nothing on the main hand!",
   "as.command.you": "You",
   "as.command.reloaded": "Configuration reloaded",
