@@ -9,7 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 import java.util.List;
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
+import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 public class NetworkHelper {
 
@@ -20,7 +20,7 @@ public class NetworkHelper {
                 sentConfigToPlayer(player);
             }
         } else {
-            LOG.warn("[All Stackable] Server hasn't been loaded.");
+            LOGGER.warn("Server hasn't been loaded.");
         }
     }
 

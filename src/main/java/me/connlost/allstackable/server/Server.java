@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.File;
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
+import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 
 public class Server {
@@ -20,7 +20,7 @@ public class Server {
         File file = minecraft_server.getLevelStorage().resolveFile(minecraft_server.getLevelName(),"allstackable-config.json");
         config_manager.passConfigFile(file);
         config_manager.setupConfig();
-        LOG.info("[All Stackable] Loaded!");
+        LOGGER.info("Loaded!");
     }
 
     public static void onPlayerJoin(ServerPlayerEntity player){
