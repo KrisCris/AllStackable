@@ -34,10 +34,15 @@ public class MixinItemStack {
 
     @Redirect(method = "damage(ILjava/util/Random;Lnet/minecraft/server/network/ServerPlayerEntity;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;setDamage(I)V"))
     private void splitStackedTools(ItemStack stack, int damage, int amount, Random random, ServerPlayerEntity player){
-        ItemStack rest = stack.copy();
-        rest.decrement(1);
-        stack.setCount(1);
+        ItemStack rest = null;
+        if (stack.getCount()>1 && ItemsHelper.isModified(stack) && player!=null){
+            rest = stack.copy();
+            rest.decrement(1);
+            stack.setCount(1);
+        }
         stack.setDamage(damage);
-        ItemsHelper.insertNewItem(player,rest);
+        if (rest != null){
+            ItemsHelper.insertNewItem(player,rest);
+        }
     }
 }
