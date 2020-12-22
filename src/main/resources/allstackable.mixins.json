@@ -6,7 +6,6 @@
   "mixins": [
     "MixinItem",
     "MixinPlayerManager",
-    "MixinMinecraftServer",
     "MixinMushroomStewItem",
     "MixinSuspiciousStewItem",
     "MixinBucketItem",

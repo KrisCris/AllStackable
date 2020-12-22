@@ -21,7 +21,7 @@ public class NetworkHelper {
                 sentConfigToPlayer(player);
             }
         } else {
-            LOG.warn("[All Stackable] Server hasn't been loaded.");
+            LOG.warn("Server hasn't been loaded.");
         }
     }
 

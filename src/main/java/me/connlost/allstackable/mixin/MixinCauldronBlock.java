@@ -1,5 +1,6 @@
 package me.connlost.allstackable.mixin;
 
+import me.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -34,54 +35,54 @@ public class MixinCauldronBlock {
     @Shadow
     public static final IntProperty LEVEL = Properties.LEVEL_3;
 
-    //tried to simply redirect the setStackInHand method... But failed and no idea why.
     @Inject(method = "onUse", at = @At(value = "HEAD"), cancellable = true)
     private void fixMojangStupidity(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.isEmpty())
-            cir.setReturnValue(ActionResult.PASS);
-        int i = ((Integer) state.get((Property) LEVEL)).intValue();
-        Item item = itemStack.getItem();
-        if (item == Items.WATER_BUCKET) {
-            if (i < 3 && !world.isClient) {
-                if (!player.abilities.creativeMode) {
-                    itemStack.decrement(1);
+        if (ItemsHelper.isModified(itemStack)){
+            if (itemStack.isEmpty())
+                cir.setReturnValue(ActionResult.PASS);
+            int i = ((Integer) state.get((Property) LEVEL)).intValue();
+            Item item = itemStack.getItem();
+            if (item == Items.WATER_BUCKET) {
+                if (i < 3 && !world.isClient) {
+                    if (!player.abilities.creativeMode) {
+                        itemStack.decrement(1);
+                    }
+                    insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
+                    player.incrementStat(Stats.FILL_CAULDRON);
+                    setLevel(world, pos, state, 3);
+                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 }
-                insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
-                player.incrementStat(Stats.FILL_CAULDRON);
-                setLevel(world, pos, state, 3);
-                world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                cir.setReturnValue(ActionResult.success(world.isClient));
             }
-            cir.setReturnValue(ActionResult.success(world.isClient));
-        }
 
-        if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
-            if (i < 3 && !world.isClient) {
-                if (!player.abilities.creativeMode) {
-                    player.incrementStat(Stats.USE_CAULDRON);
-                    itemStack.decrement(1);
-                    insertNewItem(player,hand,itemStack, new ItemStack(Items.GLASS_BOTTLE,1));
+            if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
+                if (i < 3 && !world.isClient) {
+                    if (!player.abilities.creativeMode) {
+                        player.incrementStat(Stats.USE_CAULDRON);
+                        itemStack.decrement(1);
+                        insertNewItem(player,hand,itemStack, new ItemStack(Items.GLASS_BOTTLE,1));
+                    }
+                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    setLevel(world, pos, state, i + 1);
                 }
-                world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                setLevel(world, pos, state, i + 1);
+                cir.setReturnValue(ActionResult.success(world.isClient));
             }
-            cir.setReturnValue(ActionResult.success(world.isClient));
-        }
 
-        if (i > 0 && item instanceof BlockItem) {
-            Block block = ((BlockItem)item).getBlock();
-            if (block instanceof ShulkerBoxBlock && !world.isClient()) {
-                ItemStack itemStack5 = new ItemStack(Blocks.SHULKER_BOX, 1);
-                if (itemStack.hasTag())
-                    itemStack5.setTag(itemStack.getTag().copy());
-                itemStack.decrement(1);
-                insertNewItem(player, hand, itemStack, itemStack5);
-                setLevel(world, pos, state, i - 1);
-                player.incrementStat(Stats.CLEAN_SHULKER_BOX);
-                cir.setReturnValue(ActionResult.SUCCESS);
+            if (i > 0 && item instanceof BlockItem) {
+                Block block = ((BlockItem)item).getBlock();
+                if (block instanceof ShulkerBoxBlock && !world.isClient()) {
+                    ItemStack itemStack5 = new ItemStack(Blocks.SHULKER_BOX, 1);
+                    if (itemStack.hasTag())
+                        itemStack5.setTag(itemStack.getTag().copy());
+                    itemStack.decrement(1);
+                    insertNewItem(player, hand, itemStack, itemStack5);
+                    setLevel(world, pos, state, i - 1);
+                    player.incrementStat(Stats.CLEAN_SHULKER_BOX);
+                    cir.setReturnValue(ActionResult.SUCCESS);
+                }
             }
         }
-
     }
 
 
