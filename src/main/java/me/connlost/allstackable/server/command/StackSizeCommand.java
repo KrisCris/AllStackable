@@ -38,7 +38,6 @@ public class StackSizeCommand {
         LinkedList<Item> list = itemsHelper.getAllModifiedItems();
         if (list.isEmpty()) {
             source.sendFeedback(new TranslatableText("as.command.show_none"), false);
-//            LOG.info("No item has been modified");
         }
         for (Item item : list) {
             source.sendFeedback(new TranslatableText("as.command.show_item",
@@ -65,7 +64,6 @@ public class StackSizeCommand {
             itemsHelper.setSingle(item, count);
             configManager.syncConfig();
             source.sendFeedback(new TranslatableText("as.command.set_item",
-                    source.getName(),
                     new TranslatableText(item.getTranslationKey()),
                     count,
                     itemsHelper.getDefaultCount(item)), true);
@@ -85,7 +83,13 @@ public class StackSizeCommand {
         int count = itemsHelper.setMatchedItems(originalSize, newSize, type);
         configManager.syncConfig();
         source.sendFeedback(
-                new LiteralText(source.getName() + " set the stack size of "+count+" item(s) from "+originalSize+" to "+newSize),
+                new TranslatableText(
+                        "as.command.set_matched",
+                        count,
+                        newSize,
+                        type.equals("vanilla") ? new TranslatableText("as.command.default") : new TranslatableText("as.command.previous"),
+                        originalSize
+                ),
                 true
         );
         return 1;
@@ -95,16 +99,14 @@ public class StackSizeCommand {
         itemsHelper.resetItem(item);
         configManager.syncConfig();
         source.sendFeedback(new TranslatableText("as.command.reset_item",
-                new TranslatableText(item.getTranslationKey()),
-                source.getName()), true);
+                new TranslatableText(item.getTranslationKey())), true);
         return 1;
     }
 
     private static int resetAllItems(ServerCommandSource source) {
         itemsHelper.resetAll(true);
         configManager.resetAllItems();
-        source.sendFeedback(new TranslatableText("as.command.reset_all",
-                source.getName()), true);
+        source.sendFeedback(new TranslatableText("as.command.reset_all"), true);
         return 1;
     }
 
