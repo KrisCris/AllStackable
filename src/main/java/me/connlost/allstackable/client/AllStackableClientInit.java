@@ -3,8 +3,11 @@ package me.connlost.allstackable.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.fabricmc.fabric.api.network.PacketContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.ArrayList;
@@ -20,11 +23,16 @@ public class AllStackableClientInit implements ClientModInitializer {
     @Override
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
-        ClientSidePacketRegistry.INSTANCE.register(SHARE_CONFIG_PACKET_ID, AllStackableClientInit::configHandler);
+        ClientPlayConnectionEvents.INIT.register((handler, client) ->{
+            ClientPlayNetworking.registerReceiver(
+                    SHARE_CONFIG_PACKET_ID,
+                    (client1, handler1, buf, sender1) -> configHandler(handler1, sender1, client1, buf)
+            );
+        });
     }
 
-    private static void configHandler(PacketContext packetContext, PacketByteBuf packetByteBuf) {
-        ArrayList<LinkedHashMap<String, Integer>> configList = SerializationUtils.deserialize(packetByteBuf.readByteArray());
+    private void configHandler(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client, PacketByteBuf buf){
+        ArrayList<LinkedHashMap<String, Integer>> configList = SerializationUtils.deserialize(buf.readByteArray());
         ConfigSync.syncConfig(configList);
     }
 }
