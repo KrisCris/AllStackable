@@ -6,7 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.WorldSavePath;
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
+import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 
 public class Server {
@@ -17,7 +17,7 @@ public class Server {
         minecraft_server = ms;
         config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("allstackable-config.json").toFile());
         config_manager.setupConfig();
-        LOG.info("Loaded!");
+        LOGGER.info("[All Stackable] Loaded!");
     }
 
     public static void onPlayerJoin(ServerPlayerEntity player){

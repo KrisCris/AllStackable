@@ -12,14 +12,14 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 public class AllStackableInit implements ModInitializer {
 	public static final Identifier SHARE_CONFIG_PACKET_ID = new Identifier("allstackable", "config");
-	public static final Logger LOG = LogManager.getLogger("All Stackable");
+	public static final Logger LOGGER = LogManager.getLogger();
 	
 
 	@Override
 	public void onInitialize() {
-		LOG.info("Start loading!");
+		LOGGER.info("[All Stackable] Start loading!");
 		StackSizeCommand.register();
-		LOG.info("Command registered.");
+		LOGGER.info("[All Stackable] Command registered.");
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			Server.onServerLoaded(server);
 		});

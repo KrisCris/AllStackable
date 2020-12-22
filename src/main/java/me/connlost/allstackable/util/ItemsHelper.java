@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
+import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 public class ItemsHelper {
     private static ItemsHelper itemsHelper;
@@ -36,10 +36,12 @@ public class ItemsHelper {
             Item item = itemEntry.getValue();
             ((IItemMaxCount) item).revert();
         }
+        if (serverSide) LOGGER.info("[All Stackable] Reset all items");
     }
 
     public void resetItem(Item item) {
-        setSingle(item, getDefaultCount(item));
+        ((IItemMaxCount) item).revert();
+        LOGGER.info("[All Stackable] Reset "+Registry.ITEM.getId(item).toString());
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet, boolean serverSide) {
@@ -48,9 +50,9 @@ public class ItemsHelper {
             Item item = Registry.ITEM.get(new Identifier(entry.getKey()));
 
             if (serverSide)
-                LOG.info("Set " + entry.getKey() + " to " + entry.getValue());
+                LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + entry.getValue());
             else
-                LOG.info("[Client] Set " + entry.getKey() + " to " + entry.getValue());
+                LOGGER.info("[All Stackable] [Client] Set " + entry.getKey() + " to " + entry.getValue());
             ((IItemMaxCount) item).setMaxCount(entry.getValue());
 
         }
@@ -71,6 +73,7 @@ public class ItemsHelper {
 
     public void setSingle(Item item, int count) {
         ((IItemMaxCount) item).setMaxCount(count);
+        LOGGER.info("[All Stackable] Set "+Registry.ITEM.getId(item).toString()+" to "+ count);
     }
 
     public LinkedList<Item> getAllModifiedItems() {
