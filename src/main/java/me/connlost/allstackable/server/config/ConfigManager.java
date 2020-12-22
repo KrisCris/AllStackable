@@ -114,19 +114,19 @@ final public class ConfigManager {
 
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                LOGGER.error("[AllStackable] Failed to create the parent directory");
-                throw new RuntimeException("[AllStackable] Failed to create the parent directory");
+                LOGGER.error("Failed to create the parent directory");
+                throw new RuntimeException("Failed to create the parent directory");
             }
         } else if (!dir.isDirectory()) {
-            LOGGER.error("[AllStackable] Failed to create config file");
-            throw new RuntimeException("[AllStackable] The parent is not a directory");
+            LOGGER.error("Failed to create config file");
+            throw new RuntimeException("The parent is not a directory");
         }
 
         try (FileWriter writer = new FileWriter(configFile)) {
             gson.toJson(configList, writer);
         } catch (IOException e) {
-            LOGGER.error("[AllStackable] Failed to save config");
-            throw new RuntimeException("[AllStackable] Could not save config file", e);
+            LOGGER.error("Failed to save config");
+            throw new RuntimeException("Could not save config file", e);
         }
     }
 
