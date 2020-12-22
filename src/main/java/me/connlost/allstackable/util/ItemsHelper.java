@@ -139,7 +139,6 @@ public class ItemsHelper {
     }
 
     public static void insertNewItem(PlayerEntity player, ItemStack stack2) {
-        System.out.println("insert:"+stack2.getCount());
         if (!player.inventory.insertStack(stack2)) {
             player.dropItem(stack2, false);
         }

@@ -36,7 +36,7 @@ public class MixinItemStack {
     private void splitStackedTools(ItemStack stack, int damage, int amount, Random random, ServerPlayerEntity player){
         Item i = stack.getItem();
         ItemStack rest = null;
-        if (stack.getCount()>1 && ((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount()){
+        if (stack.getCount()>1 && ((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount() && player!=null){
             rest = stack.copy();
             rest.decrement(1);
             stack.setCount(1);
