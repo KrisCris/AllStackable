@@ -144,5 +144,11 @@ public class ItemsHelper {
         }
     }
 
-    
+    public static boolean isModified(ItemStack s){
+        if (s.isEmpty()){
+            return false;
+        }
+        Item i = s.getItem();
+        return (((IItemMaxCount)i).getVanillaMaxCount()!=i.getMaxCount())&&s.getCount()>1;
+    }
 }
