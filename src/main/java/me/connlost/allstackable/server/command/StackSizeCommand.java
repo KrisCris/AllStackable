@@ -45,7 +45,7 @@ public class StackSizeCommand {
         LinkedList<Item> list = itemsHelper.getAllModifiedItem();
         if (list.isEmpty()) {
             source.sendFeedback(new TranslatableText("as.command.show_none"), false);
-//            LOG.info("[All Stackable] No item has been modified");
+//            LOG.info("No item has been modified");
         }
         for (Item item : list) {
             source.sendFeedback(new TranslatableText("as.command.show_item",
@@ -54,7 +54,7 @@ public class StackSizeCommand {
                     itemsHelper.getDefaultCount(item)), false);
 
 //            LOG.info(String.format(
-//                    "[All Stackable] The max stackable count of %s is %s (Default: %s)",
+//                    "The max stackable count of %s is %s (Default: %s)",
 //                    item.getTranslationKey(),
 //                    itemsHelper.getCurrentCount(item),
 //                    itemsHelper.getDefaultCount(item))
@@ -76,7 +76,7 @@ public class StackSizeCommand {
             source.sendError(new TranslatableText("as.command.error_exceeded"));
 
 //            LOG.info(
-//                    "[All Stackable] %s tried to set stack size of %s more than 64",
+//                    "%s tried to set stack size of %s more than 64",
 //                    source.getEntity() instanceof ServerPlayerEntity ? source.getName() : "Server",
 //                    item.getTranslationKey()
 //            );

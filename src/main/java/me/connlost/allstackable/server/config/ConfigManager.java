@@ -11,7 +11,7 @@ import me.connlost.allstackable.util.NetworkHelper;
 import org.apache.commons.lang3.SerializationUtils;
 
 
-import static me.connlost.allstackable.AllStackableInit.LOG;
+import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 final public class ConfigManager {
     private static ConfigManager cm;
@@ -54,7 +54,7 @@ final public class ConfigManager {
         if (configList.get(1).containsKey(str)){
             return configList.get(1).get(str);
         } else {
-            LOG.error("No such rule key");
+            LOGGER.error("No such rule key");
             return -1;
         }
     }
@@ -75,7 +75,7 @@ final public class ConfigManager {
         loadConfig();
         itemsHelper.setCountByConfig(this.configList.get(0).entrySet(),true);
         NetworkHelper.sentConfigToAll();
-        LOG.info("[All Stackable] Config Loaded");
+        LOGGER.info("Config Loaded");
     }
 
     public ArrayList<LinkedHashMap<String, Integer>> loadConfig(){
@@ -84,8 +84,8 @@ final public class ConfigManager {
                 configList = gson.fromJson(reader, new TypeToken<ArrayList<LinkedHashMap<String, Integer>>>(){}.getType());
 //                itemsMap = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
             } catch (IOException e) {
-                LOG.error("[All Stackable] Failed to parse config");
-                throw new RuntimeException("[All Stackable] Could not parse config", e);
+                LOGGER.error("Failed to parse config");
+                throw new RuntimeException("Could not parse config", e);
             }
         } else {
             initConfigList();
@@ -94,12 +94,12 @@ final public class ConfigManager {
             String oldPath = path.substring(0, path.length()-"allstackable-config.json".length())+"all_stackable.json";
             File oldFile = new File(oldPath);
             if (oldFile.exists()){
-                LOG.info("[All Stackable] Find config file for older version of AllStackable, converting!");
+                LOGGER.info("Find config file for older version of AllStackable, converting!");
                 try (FileReader reader = new FileReader(oldFile)){
                 configList.set(0, gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType()));
                 } catch (IOException e) {
-                    LOG.error("[All Stackable] Failed to parse old config");
-                    throw new RuntimeException("[All Stackable] Could not parse config", e);
+                    LOGGER.error("Failed to parse old config");
+                    throw new RuntimeException("Could not parse config", e);
                 }
             }
             //
@@ -114,18 +114,18 @@ final public class ConfigManager {
 
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                LOG.error("[AllStackable] Failed to create the parent directory");
+                LOGGER.error("[AllStackable] Failed to create the parent directory");
                 throw new RuntimeException("[AllStackable] Failed to create the parent directory");
             }
         } else if (!dir.isDirectory()) {
-            LOG.error("[AllStackable] Failed to create config file");
+            LOGGER.error("[AllStackable] Failed to create config file");
             throw new RuntimeException("[AllStackable] The parent is not a directory");
         }
 
         try (FileWriter writer = new FileWriter(configFile)) {
             gson.toJson(configList, writer);
         } catch (IOException e) {
-            LOG.error("[AllStackable] Failed to save config");
+            LOGGER.error("[AllStackable] Failed to save config");
             throw new RuntimeException("[AllStackable] Could not save config file", e);
         }
     }
