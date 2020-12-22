@@ -4,7 +4,7 @@ import io.netty.buffer.Unpooled;
 import me.connlost.allstackable.AllStackableInit;
 import me.connlost.allstackable.server.Server;
 import me.connlost.allstackable.server.config.ConfigManager;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -28,7 +28,7 @@ public class NetworkHelper {
     public static void sentConfigToPlayer(ServerPlayerEntity player){
         PacketByteBuf passedData = new PacketByteBuf(Unpooled.buffer());
         passedData.writeByteArray(ConfigManager.getConfigManager().getSerializedConfig());
-        ServerPlayNetworking.send(
+        ServerSidePacketRegistry.INSTANCE.sendToPlayer(
                 player,
                 AllStackableInit.SHARE_CONFIG_PACKET_ID,
                 passedData
