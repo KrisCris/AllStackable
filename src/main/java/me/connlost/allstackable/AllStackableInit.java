@@ -23,6 +23,7 @@ public class AllStackableInit implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			Server.onServerLoaded(server);
 		});
+
 	}
 
 

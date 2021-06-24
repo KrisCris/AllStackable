@@ -3,7 +3,7 @@ package me.connlost.allstackable.util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -155,12 +155,12 @@ public class ItemsHelper {
     public static final int TAG_LONGARRAY = 12;
 
     public static boolean shulkerBoxHasItems(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
+        NbtCompound tag = stack.getTag();
 
         if (tag == null || !tag.contains("BlockEntityTag", TAG_COMPOUND))
             return false;
 
-        CompoundTag bet = tag.getCompound("BlockEntityTag");
+        NbtCompound bet = tag.getCompound("BlockEntityTag");
         return bet.contains("Items", TAG_LIST) && !bet.getList("Items", TAG_COMPOUND).isEmpty();
     }
 
