@@ -138,14 +138,12 @@ public class StackSizeCommand {
 
     private static int fromGlobal(ServerCommandSource source){
         configManager.applyGlobalToLocal();
-        configManager.syncConfig();
         source.sendFeedback(new TranslatableText("as.command.from_global"),true);
         return 1;
     }
 
     private static int restore(ServerCommandSource source){
         if (configManager.restoreBackup()){
-            configManager.syncConfig();
             source.sendFeedback(new TranslatableText("as.command.restored"), true);
             return 1;
         } else {

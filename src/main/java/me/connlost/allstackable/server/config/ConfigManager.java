@@ -117,7 +117,9 @@ final public class ConfigManager {
                 LOGGER.error("[All Stackable] Failed to parse backup file");
                 throw new RuntimeException("Could not parse backup file", e);
             }
-            writeConfig(this.configFile, this.configList);
+            this.writeConfig(this.configFile, this.configList);
+            this.setupConfig();
+            LOGGER.info("[All Stackable] Backup config restored!");
             return true;
         } else {
             return false;
@@ -311,6 +313,10 @@ final public class ConfigManager {
 
     public void applyGlobalToLocal() {
         this.tryApplyGlobalToLocalConfig(true);
+        this.writeConfig(this.configFile, this.configList);
+        itemsHelper.setCountByConfig(this.configList.get(0).entrySet(), true);
+        NetworkHelper.sentConfigToAll();
+        LOGGER.info("[All Stackable] Global config loaded");
     }
 
 
