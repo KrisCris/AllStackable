@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static me.connlost.allstackable.util.ItemsHelper.insertNewItem;
 
-@Mixin(CauldronBlock.class)
+@Mixin(AbstractCauldronBlock.class)
 public class MixinCauldronBlock {
 
     @Shadow
