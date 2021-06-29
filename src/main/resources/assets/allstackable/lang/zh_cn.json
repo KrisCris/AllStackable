@@ -1,5 +1,5 @@
 {
-  "as.command.help":"",
+  "as.command.help":"\t/allstackable show all : 列出所有修改过的物品.\n\t/allstackable show [item] : 显示这个物品的信息.\n\t/allstackable show hand [player] : 显示玩家手上的物品信息.\n\t/allstackable reset all : 撤销所有更改.\n\t/allstackable reset [item] : 撤销对这个物品的更改.\n\t/allstackable reset hand [player] : 撤销玩家手上的物品的更改.\n\t/allstackable set [itemID] [count] : 更改指定物品的堆叠数量.\n\t/allstackable set hand [player] : 更改玩家手上物品的堆叠数量.\n\t/allstackable set vanilla [default value] [new value] : 将所有默认堆叠上限为【default value】的物品的堆叠上限设置为【new value】（只对未被修改过的物品生效）\n\t/allstackable set modified [current value] [new value] : 将所有被修改过堆叠上限，且为【current value】的物品的堆叠上限设置为【new value】（只对被修改过的物品生效）\n\t/allstackable set all [current value] [new value] : 将所有当前堆叠上限为【current value】的物品的堆叠上限设置为【new value】\n\t/allstackable config reload : 重新从文件载入配置文件.\n\t/allstackable config loadFromGlobal : 为你当前游戏载入全局配置（保存在config文件夹里）.\n\t/allstackable config saveToGlobal : 让你当前游戏配置成为全局配置.\n\t/allstackable config globalConfigAutoApply [true/false] : 是否让新游戏自动使用全局配置，true代表是.\n\t/allstackable config restore : 恢复到上次的更变\n\t如果你想在不是op或者作弊的情况下使用，你可以把存档文件夹中配置文件里的 \"permissionLevel\" 从4 改到 0.\n\t如果你想只堆叠空的潜影盒，你可以把存档文件夹中配置文件里的 \"stackEmptyShulkerBoxOnly\" 从0 改到 1.\n\t",
   "as.command.set_item": "%s的堆叠上限被设置为%s (默认：%s)",
   "as.command.show_item": "%s的堆叠上限为%d (默认：%s)",
   "as.command.show_none": "不存在被修改的物品",
