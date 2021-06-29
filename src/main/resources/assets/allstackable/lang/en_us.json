@@ -1,4 +1,5 @@
 {
+  "as.command.help":"",
   "as.command.set_item": "Set the stack size of %s to %s (Default: %s)",
   "as.command.show_item": "The stack size of %s is %s (Default: %s)",
   "as.command.show_none": "No item has been modified",
@@ -7,7 +8,12 @@
   "as.command.error_empty_hand": "%s has nothing on the main hand!",
   "as.command.you": "You",
   "as.command.reloaded": "Configuration reloaded",
+  "as.command.restored": "Configuration restored",
+  "as.command.nobk": "No backup file founded",
   "as.command.set_matched": "Set the stack size of %s item(s) to %s (%s: %s)",
   "as.command.default": "Default",
-  "as.command.previous": "Previous"
+  "as.command.previous": "Previous",
+  "as.command.updated_glob_conf": "Global config has been updated",
+  "as.command.from_global": "Global Config has been applied to this game，enter '/allstackable show all' to view the change",
+  "as.name": "AllStackable"
 }
