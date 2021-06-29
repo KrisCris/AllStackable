@@ -24,10 +24,10 @@ bin/
 .classpath
 .project
 
+# macos
+
+*.DS_Store
+
 # fabric
 
 run/
-
-# MacOs
-.DS_Store
-*/.DS_Store
