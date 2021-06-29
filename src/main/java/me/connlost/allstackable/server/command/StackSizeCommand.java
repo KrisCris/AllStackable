@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
 import java.util.LinkedList;
@@ -131,11 +130,38 @@ public class StackSizeCommand {
         return 1;
     }
 
+    private static int updateGlobalConfig(ServerCommandSource source, boolean allowAutoApply, boolean updateStackableList){
+        configManager.updateGlobalConfig(updateStackableList, allowAutoApply);
+        source.sendFeedback(new TranslatableText("as.command.updated_glob_conf"), true);
+        return 1;
+    }
+
+    private static int fromGlobal(ServerCommandSource source){
+        configManager.applyGlobalToLocal();
+        source.sendFeedback(new TranslatableText("as.command.from_global"),true);
+        return 1;
+    }
+
+    private static int restore(ServerCommandSource source){
+        if (configManager.restoreBackup()){
+            source.sendFeedback(new TranslatableText("as.command.restored"), true);
+            return 1;
+        } else {
+            source.sendError(new TranslatableText("as.command.nobk"));
+            return 0;
+        }
+    }
+
+    private static int help(ServerCommandSource source){
+        source.sendFeedback(new TranslatableText("as.command.help"),false);
+        return 1;
+    }
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-            LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable").requires(source -> source.hasPermissionLevel(4))
-
+            LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable")
+                    .requires(source -> source.hasPermissionLevel(configManager.getRuleSetting("permissionLevel")))
+                    .then(literal("help").executes(ctx -> help(ctx.getSource())))
                     .then(literal("show")
                             .then(literal("hand")
                                     .then(argument("targets", EntityArgumentType.player())
@@ -215,12 +241,29 @@ public class StackSizeCommand {
                                     )
                             )
                     )
-                    .then(literal("reload")
-                            .executes(ctx -> reloadConfig(ctx.getSource()))
+                    .then(literal("config")
+                            .then(literal("reload")
+                                    .executes(ctx -> reloadConfig(ctx.getSource()))
+                            )
+                            .then(literal("loadFromGlobal")
+                                    .executes(ctx -> fromGlobal(ctx.getSource()))
+                            )
+                            .then(literal("saveToGlobal")
+                                    .executes(ctx -> updateGlobalConfig(ctx.getSource(), false, true))
+                            )
+                            .then(literal("globalConfigAutoApply")
+                                    .then(literal("true").executes(ctx -> updateGlobalConfig(ctx.getSource(), true, false)))
+                                    .then(literal("false").executes(ctx -> updateGlobalConfig(ctx.getSource(), false, false)))
+                            )
+                            .then(literal("restore")
+                                    .executes(ctx -> restore(ctx.getSource()))
+                            )
+
                     );
 
             dispatcher.register(literalArgumentBuilder);
         });
     }
+
 
 }
