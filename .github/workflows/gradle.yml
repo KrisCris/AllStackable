@@ -29,5 +29,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: AllStackable
-        path: build/libs/AllStackable-*.*.*[^sourcedv].jar
+        path: build/libs/AllStackable-*.*.*-*.*[^sourcedv].jar
       
