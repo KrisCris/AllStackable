@@ -36,7 +36,7 @@ final public class ConfigManager {
     }
 
     private ConfigManager() {
-//        initConfigList();
+        initConfigList();
         gson = new Gson();
         globalConfigFile = FabricLoader.getInstance().getConfigDir().resolve("allstackable-global-config.json").toFile();
         itemsHelper = ItemsHelper.getItemsHelper();
