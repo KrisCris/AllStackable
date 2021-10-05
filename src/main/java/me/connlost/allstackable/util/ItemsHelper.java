@@ -155,7 +155,7 @@ public class ItemsHelper {
     public static final int TAG_LONGARRAY = 12;
 
     public static boolean shulkerBoxHasItems(ItemStack stack) {
-        NbtCompound tag = stack.getTag();
+        NbtCompound tag = stack.getNbt();
 
         if (tag == null || !tag.contains("BlockEntityTag", TAG_COMPOUND))
             return false;

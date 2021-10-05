@@ -1,90 +1,59 @@
-//package me.connlost.allstackable.mixin;
-//
-//import me.connlost.allstackable.util.ItemsHelper;
-//import net.minecraft.block.*;
-//import net.minecraft.entity.player.PlayerEntity;
-//import net.minecraft.item.*;
-//import net.minecraft.potion.PotionUtil;
-//import net.minecraft.potion.Potions;
-//import net.minecraft.sound.SoundCategory;
-//import net.minecraft.sound.SoundEvents;
-//import net.minecraft.stat.Stats;
-//import net.minecraft.state.property.IntProperty;
-//import net.minecraft.state.property.Properties;
-//import net.minecraft.state.property.Property;
-//import net.minecraft.util.ActionResult;
-//import net.minecraft.util.Hand;
-//import net.minecraft.util.hit.BlockHitResult;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.World;
-//import org.spongepowered.asm.mixin.Mixin;
-//import org.spongepowered.asm.mixin.Shadow;
-//import org.spongepowered.asm.mixin.injection.At;
-//import org.spongepowered.asm.mixin.injection.Inject;
-//import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//
-//import static me.connlost.allstackable.util.ItemsHelper.insertNewItem;
-//
-//@Mixin(AbstractCauldronBlock.class)
-//public class MixinCauldronBlock {
-//
-//    @Shadow
-//    public void setLevel(World world, BlockPos pos, BlockState state, int level) {
-//    }
-//
-//    @Shadow
-//    public static final IntProperty LEVEL = Properties.LEVEL_3;
-//
-//    @Inject(method = "onUse", at = @At(value = "HEAD"), cancellable = true)
-//    private void fixCauldron(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-//        ItemStack itemStack = player.getStackInHand(hand);
-//        if (ItemsHelper.isModified(itemStack)){
-//            if (itemStack.isEmpty())
-//                cir.setReturnValue(ActionResult.PASS);
-//            int i = ((Integer) state.get((Property) LEVEL)).intValue();
-//            Item item = itemStack.getItem();
-//            if (item == Items.WATER_BUCKET) {
-//                if (i < 3 && !world.isClient) {
-//                    if (!player.getAbilities().creativeMode) {
-//                        itemStack.decrement(1);
-//                    }
-//                    insertNewItem(player, hand, itemStack, new ItemStack(Items.BUCKET, 1));
-//                    player.incrementStat(Stats.FILL_CAULDRON);
-//                    setLevel(world, pos, state, 3);
-//                    world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-//                }
-//                cir.setReturnValue(ActionResult.success(world.isClient));
-//            }
-//
-//            if (item == Items.POTION && PotionUtil.getPotion(itemStack) == Potions.WATER) {
-//                if (i < 3 && !world.isClient) {
-//                    if (!player.getAbilities().creativeMode) {
-//                        player.incrementStat(Stats.USE_CAULDRON);
-//                        itemStack.decrement(1);
-//                        insertNewItem(player,hand,itemStack, new ItemStack(Items.GLASS_BOTTLE,1));
-//                    }
-//                    world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
-//                    setLevel(world, pos, state, i + 1);
-//                }
-//                cir.setReturnValue(ActionResult.success(world.isClient));
-//            }
-//
-//            if (i > 0 && item instanceof BlockItem) {
-//                Block block = ((BlockItem)item).getBlock();
-//                if (block instanceof ShulkerBoxBlock && !world.isClient()) {
-//                    ItemStack itemStack5 = new ItemStack(Blocks.SHULKER_BOX, 1);
-//                    if (itemStack.hasTag())
-//                        itemStack5.setTag(itemStack.getTag().copy());
-//                    itemStack.decrement(1);
-//                    insertNewItem(player, hand, itemStack, itemStack5);
-//                    setLevel(world, pos, state, i - 1);
-//                    player.incrementStat(Stats.CLEAN_SHULKER_BOX);
-//                    cir.setReturnValue(ActionResult.SUCCESS);
-//                }
-//            }
-//        }
-//    }
-//
-//
-//}
-//
+package me.connlost.allstackable.mixin;
+
+import me.connlost.allstackable.util.ItemsHelper;
+import net.minecraft.block.*;
+import net.minecraft.block.cauldron.CauldronBehavior;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Map;
+
+@Mixin(AbstractCauldronBlock.class)
+public class MixinCauldronBlock {
+
+    @Shadow
+    Map<Item, CauldronBehavior> behaviorMap;
+
+
+    CauldronBehavior CLEAN_STACKED_SHULKER_BOX = (state, world, pos, player, hand, stack) -> {
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (!(block instanceof ShulkerBoxBlock)) {
+            return ActionResult.PASS;
+        } else {
+            if (!world.isClient) {
+                ItemStack itemStack = new ItemStack(Blocks.SHULKER_BOX);
+                if (stack.hasNbt()) {
+                    itemStack.setNbt(stack.getNbt().copy());
+                }
+                ItemsHelper.insertNewItem(player, itemStack);
+                stack.decrement(1);
+                player.incrementStat(Stats.CLEAN_SHULKER_BOX);
+                LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+            }
+
+            return ActionResult.success(world.isClient);
+        }
+    };
+
+    @Inject(method = "onUse", at=@At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"), cancellable = true)
+    private void cleanStackedShulkerBox(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
+        ItemStack itemStack = player.getStackInHand(hand);
+        if (ItemsHelper.isModified(itemStack) && itemStack.getCount() > 1) {
+            if(behaviorMap.get(itemStack.getItem()) == CauldronBehavior.CLEAN_SHULKER_BOX){
+                cir.setReturnValue(CLEAN_STACKED_SHULKER_BOX.interact(state, world, pos, player, hand, itemStack));
+            }
+        }
+    }
+}
+
