@@ -4,7 +4,7 @@
 
 
 ### Ever wanted to stack potions, totems, or Shulker Boxes in one slot? Or perhaps hope to sort totems produced by the raid farm using your Redstone machines? This is the mod for you!
- 
+
 ![](https://i.imgur.com/31Q4pb2.png "")
 
 ![](https://img.shields.io/github/workflow/status/KrisCris/AllStackable/Java%20CI%20with%20Gradle/master)
@@ -53,11 +53,8 @@
 - **/allstackable config restore : ** 恢复到上次的更变
 - 如果你想在不是op或者作弊的情况下使用，你可以把存档文件夹中配置文件里的 "permissionLevel" 从4 改到 0.
 - 如果你想只堆叠空的潜影盒，你可以把存档文件夹中配置文件里的 "stackEmptyShulkerBoxOnly" 从0 改到 1.
- 
+- 
 
- 
-
- 
 
 Video: https://streamable.com/7htqbn ( Some issues in the video has been fixed! )
 
@@ -86,7 +83,7 @@ Video: https://streamable.com/7htqbn ( Some issues in the video has been fixed! 
  
 
 **Latest Version: 1.2.4**
- 
+
 **Fixes related to stackable items:**
 
 [1.2] Stackable items were not enchantable.

@@ -15,6 +15,8 @@ public class MixinPowderSnowBucketItem {
     private void stackableSnowBucket(PlayerEntity instance, Hand hand, ItemStack itemStack, ItemUsageContext context){
         if (ItemsHelper.isModified(context.getStack()) && context.getStack().getCount() > 0) {
             ItemsHelper.insertNewItem(context.getPlayer(), new ItemStack(Items.BUCKET));
+        } else {
+            instance.setStackInHand(hand, Items.BUCKET.getDefaultStack());
         }
     }
 }
