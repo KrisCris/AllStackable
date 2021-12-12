@@ -1,12 +1,11 @@
-package me.connlost.allstackable.server;
+package online.connlost.allstackable.server;
 
-import me.connlost.allstackable.server.config.ConfigManager;
-import me.connlost.allstackable.util.NetworkHelper;
+import online.connlost.allstackable.server.config.ConfigManager;
+import online.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.WorldSavePath;
-
-import static me.connlost.allstackable.AllStackableInit.LOGGER;
+import online.connlost.allstackable.AllStackableInit;
 
 
 public class Server {
@@ -17,7 +16,7 @@ public class Server {
         minecraft_server = ms;
         config_manager.passConfigFile(minecraft_server.getSavePath(WorldSavePath.ROOT).resolve("allstackable-config.json").toFile());
         config_manager.setupConfig();
-        LOGGER.info("[All Stackable] Loaded!");
+        AllStackableInit.LOGGER.info("[All Stackable] Loaded!");
     }
 
     public static void onPlayerJoin(ServerPlayerEntity player){

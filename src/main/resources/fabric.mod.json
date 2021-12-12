@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.connlost.allstackable.AllStackableInit"
+      "online.connlost.allstackable.AllStackableInit"
     ],
     "client": [
-      "me.connlost.allstackable.client.AllStackableClientInit"
+      "online.connlost.allstackable.client.AllStackableClientInit"
     ]
   },
   "mixins": [
@@ -32,7 +32,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.17.x"
+    "minecraft": "1.18.x"
   },
   "suggests": {
     "flamingo": "*"

@@ -1,16 +1,16 @@
-package me.connlost.allstackable.util;
+package online.connlost.allstackable.util;
 
 import io.netty.buffer.Unpooled;
-import me.connlost.allstackable.AllStackableInit;
-import me.connlost.allstackable.server.Server;
-import me.connlost.allstackable.server.config.ConfigManager;
+import online.connlost.allstackable.AllStackableInit;
+import online.connlost.allstackable.server.Server;
+import online.connlost.allstackable.server.config.ConfigManager;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
-import static me.connlost.allstackable.AllStackableInit.LOGGER;
+import static online.connlost.allstackable.AllStackableInit.LOGGER;
 
 public class NetworkHelper {
 

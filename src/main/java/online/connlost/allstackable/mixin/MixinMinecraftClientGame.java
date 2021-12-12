@@ -1,6 +1,6 @@
-package me.connlost.allstackable.mixin;
+package online.connlost.allstackable.mixin;
 
-import me.connlost.allstackable.client.ConfigSync;
+import online.connlost.allstackable.client.ConfigSync;
 import net.minecraft.client.MinecraftClientGame;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,10 +1,10 @@
-package me.connlost.allstackable.server.command;
+package online.connlost.allstackable.server.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import me.connlost.allstackable.server.config.ConfigManager;
-import me.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.server.config.ConfigManager;
+import online.connlost.allstackable.util.ItemsHelper;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;

@@ -1,4 +1,4 @@
-package me.connlost.allstackable.client;
+package online.connlost.allstackable.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -13,9 +13,8 @@ import net.minecraft.network.PacketByteBuf;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import online.connlost.allstackable.AllStackableInit;
 import org.apache.commons.lang3.SerializationUtils;
-
-import static me.connlost.allstackable.AllStackableInit.SHARE_CONFIG_PACKET_ID;
 
 
 public class AllStackableClientInit implements ClientModInitializer {
@@ -25,7 +24,7 @@ public class AllStackableClientInit implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayConnectionEvents.INIT.register((handler, client) ->{
             ClientPlayNetworking.registerReceiver(
-                    SHARE_CONFIG_PACKET_ID,
+                    AllStackableInit.SHARE_CONFIG_PACKET_ID,
                     (client1, handler1, buf, sender1) -> configHandler(handler1, sender1, client1, buf)
             );
         });

@@ -1,6 +1,6 @@
-package me.connlost.allstackable.mixin;
+package online.connlost.allstackable.mixin;
 
-import me.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MushroomStewItem.class)
+@Mixin(StewItem.class)
 public class MixinMushroomStewItem {
 
     @Inject(method = "finishUsing", at=@At(value = "NEW", target = "net/minecraft/item/ItemStack"), cancellable = true)

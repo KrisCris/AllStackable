@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.7",
-  "package": "me.connlost.allstackable.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "package": "online.connlost.allstackable.mixin",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinItem",
     "MixinPlayerManager",

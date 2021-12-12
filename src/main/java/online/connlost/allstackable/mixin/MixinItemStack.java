@@ -1,11 +1,9 @@
-package me.connlost.allstackable.mixin;
+package online.connlost.allstackable.mixin;
 
-import me.connlost.allstackable.server.config.ConfigManager;
-import me.connlost.allstackable.util.IItemMaxCount;
-import me.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.server.config.ConfigManager;
+import online.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

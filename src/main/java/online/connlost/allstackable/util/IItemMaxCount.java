@@ -1,4 +1,4 @@
-package me.connlost.allstackable.util;
+package online.connlost.allstackable.util;
 
 public interface IItemMaxCount {
     void setMaxCount(int i);

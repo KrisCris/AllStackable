@@ -1,6 +1,6 @@
-package me.connlost.allstackable.mixin;
+package online.connlost.allstackable.mixin;
 
-import me.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.util.ItemsHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;

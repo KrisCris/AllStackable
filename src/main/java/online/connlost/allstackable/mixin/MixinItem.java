@@ -1,11 +1,7 @@
-package me.connlost.allstackable.mixin;
+package online.connlost.allstackable.mixin;
 
-import me.connlost.allstackable.util.IItemMaxCount;
-import me.connlost.allstackable.util.ItemsHelper;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.item.BlockItem;
+import online.connlost.allstackable.util.IItemMaxCount;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -14,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
 public abstract class MixinItem implements IItemMaxCount {

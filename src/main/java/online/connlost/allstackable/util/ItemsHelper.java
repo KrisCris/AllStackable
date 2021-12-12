@@ -1,11 +1,9 @@
-package me.connlost.allstackable.util;
+package online.connlost.allstackable.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -16,7 +14,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import static me.connlost.allstackable.AllStackableInit.LOGGER;
+import static online.connlost.allstackable.AllStackableInit.LOGGER;
 
 public class ItemsHelper {
     private static ItemsHelper itemsHelper;

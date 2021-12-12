@@ -1,9 +1,8 @@
-package me.connlost.allstackable.client;
+package online.connlost.allstackable.client;
 
-import me.connlost.allstackable.server.config.ConfigManager;
-import me.connlost.allstackable.util.ItemsHelper;
-
-import static me.connlost.allstackable.AllStackableInit.LOGGER;
+import online.connlost.allstackable.server.config.ConfigManager;
+import online.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.AllStackableInit;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -18,10 +17,10 @@ public class ConfigSync {
      * @param configList
      */
     public static void syncConfig(ArrayList<LinkedHashMap<String, Integer>> configList){
-        LOGGER.info("[All Stackable] [Client] Sync config from server side!");
+        AllStackableInit.LOGGER.info("[All Stackable] [Client] Sync config from server side!");
         itemsHelper.setCountByConfig(configList.get(0).entrySet(), false);
         ConfigManager.getConfigManager().setRulesMap(configList.get(1));
-        LOGGER.info("[All Stackable] [Client] Sync rules:");
+        AllStackableInit.LOGGER.info("[All Stackable] [Client] Sync rules:");
         for (Map.Entry<String, Integer> rule: configList.get(1).entrySet()){
             String tag;
             switch (rule.getValue()){
@@ -29,9 +28,9 @@ public class ConfigSync {
                 case 1: tag = "true";break;
                 default: tag = rule.getValue().toString();
             }
-            LOGGER.info("\t["+rule.getKey()+"] = "+tag);
+            AllStackableInit.LOGGER.info("\t["+rule.getKey()+"] = "+tag);
         }
-        LOGGER.info("[All Stackable] [Client] Sync finished.");
+        AllStackableInit.LOGGER.info("[All Stackable] [Client] Sync finished.");
     }
 
     public static void resetConfig(){

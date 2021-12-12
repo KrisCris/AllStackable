@@ -1,4 +1,4 @@
-package me.connlost.allstackable.server.config;
+package online.connlost.allstackable.server.config;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -7,14 +7,12 @@ import java.util.Map;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import me.connlost.allstackable.util.ItemsHelper;
-import me.connlost.allstackable.util.NetworkHelper;
+import online.connlost.allstackable.util.ItemsHelper;
+import online.connlost.allstackable.util.NetworkHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import online.connlost.allstackable.AllStackableInit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SerializationUtils;
-
-
-import static me.connlost.allstackable.AllStackableInit.LOGGER;
 
 final public class ConfigManager {
     private static ConfigManager cm;
@@ -64,7 +62,7 @@ final public class ConfigManager {
         if (configList.get(1).containsKey(str)) {
             return configList.get(1).get(str);
         } else {
-            LOGGER.error("[All Stackable] No such rule key");
+            AllStackableInit.LOGGER.error("[All Stackable] No such rule key");
             return -1;
         }
     }
@@ -98,7 +96,7 @@ final public class ConfigManager {
         loadConfig();
         itemsHelper.setCountByConfig(this.configList.get(0).entrySet(), true);
         NetworkHelper.sentConfigToAll();
-        LOGGER.info("[All Stackable] Config Loaded");
+        AllStackableInit.LOGGER.info("[All Stackable] Config Loaded");
     }
 
     public boolean restoreBackup() {
@@ -109,17 +107,17 @@ final public class ConfigManager {
                 }.getType());
                 if (tmp == null || tmp.size() != 2) {
                     bk.delete();
-                    LOGGER.error("[All Stackable] Corrupted backup detected, removed.");
+                    AllStackableInit.LOGGER.error("[All Stackable] Corrupted backup detected, removed.");
                     return false;
                 }
                 configList = tmp;
             } catch (IOException e) {
-                LOGGER.error("[All Stackable] Failed to parse backup file");
+                AllStackableInit.LOGGER.error("[All Stackable] Failed to parse backup file");
                 throw new RuntimeException("Could not parse backup file", e);
             }
             this.writeConfig(this.configFile, this.configList);
             this.setupConfig();
-            LOGGER.info("[All Stackable] Backup config restored!");
+            AllStackableInit.LOGGER.info("[All Stackable] Backup config restored!");
             return true;
         } else {
             return false;
@@ -134,12 +132,12 @@ final public class ConfigManager {
                 }.getType());
                 if (configList == null || configList.size() != 2) {
                     this.configFile.delete();
-                    LOGGER.error("[All Stackable] Corrupted config detected, reset.");
+                    AllStackableInit.LOGGER.error("[All Stackable] Corrupted config detected, reset.");
                     return loadConfig();
                 }
                 configList.set(1, makeRulesUpdated(configList.get(1), false));
             } catch (IOException e) {
-                LOGGER.error("[All Stackable] Failed to parse config");
+                AllStackableInit.LOGGER.error("[All Stackable] Failed to parse config");
                 throw new RuntimeException("Could not parse config", e);
             }
         } else {
@@ -148,20 +146,20 @@ final public class ConfigManager {
             String oldPath = path.substring(0, path.length() - "allstackable-config.json".length()) + "all_stackable.json";
             File oldFile = new File(oldPath);
             if (oldFile.exists()) {
-                LOGGER.info("[All Stackable] Find config file for older version of AllStackable, converting!");
+                AllStackableInit.LOGGER.info("[All Stackable] Find config file for older version of AllStackable, converting!");
                 this.initConfigList();
                 try (FileReader reader = new FileReader(oldFile)) {
                     LinkedHashMap<String, Integer> tmp = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>() {
                     }.getType());
                     if (tmp == null) {
                         oldFile.delete();
-                        LOGGER.error("[All Stackable] Corrupted old config detected, removed.");
+                        AllStackableInit.LOGGER.error("[All Stackable] Corrupted old config detected, removed.");
                         return loadConfig();
                     }
                     configList.set(0, tmp);
                     oldFile.delete();
                 } catch (IOException e) {
-                    LOGGER.error("[All Stackable] Failed to parse old config");
+                    AllStackableInit.LOGGER.error("[All Stackable] Failed to parse old config");
                     throw new RuntimeException("Could not parse config", e);
                 }
             } else {
@@ -182,11 +180,11 @@ final public class ConfigManager {
 
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                LOGGER.error("[All Stackable] Failed to create the parent directory");
+                AllStackableInit.LOGGER.error("[All Stackable] Failed to create the parent directory");
                 throw new RuntimeException("Failed to create the parent directory");
             }
         } else if (!dir.isDirectory()) {
-            LOGGER.error("[All Stackable] Failed to create config file");
+            AllStackableInit.LOGGER.error("[All Stackable] Failed to create config file");
             throw new RuntimeException("The parent is not a directory");
         }
 
@@ -196,7 +194,7 @@ final public class ConfigManager {
             try {
                 FileUtils.copyFile(configFile, bk);
             } catch (IOException e) {
-                LOGGER.error("[All Stackable] Failed to backup existing config");
+                AllStackableInit.LOGGER.error("[All Stackable] Failed to backup existing config");
                 throw new RuntimeException("Failed to backup existing config", e);
             }
         }
@@ -205,7 +203,7 @@ final public class ConfigManager {
         try (FileWriter writer = new FileWriter(configFile)) {
             gson.toJson(configData, writer);
         } catch (IOException e) {
-            LOGGER.error("[All Stackable] Failed to save config");
+            AllStackableInit.LOGGER.error("[All Stackable] Failed to save config");
             throw new RuntimeException("Could not save config file", e);
         }
     }
@@ -240,7 +238,7 @@ final public class ConfigManager {
         }
 
         this.writeConfig(this.globalConfigFile, this.globalConfigList);
-        LOGGER.info("[All Stackable] Global Config Updated");
+        AllStackableInit.LOGGER.info("[All Stackable] Global Config Updated");
     }
 
     private void tryReadGlobalConfig() {
@@ -251,7 +249,7 @@ final public class ConfigManager {
 
                 if (globalConfigList == null || globalConfigList.size() != 2) {
                     this.globalConfigFile.delete();
-                    LOGGER.error("[All Stackable] Corrupted global config detected, reset.");
+                    AllStackableInit.LOGGER.error("[All Stackable] Corrupted global config detected, reset.");
                     tryReadGlobalConfig();
                     return;
                 }
@@ -260,7 +258,7 @@ final public class ConfigManager {
                 this.writeConfig(this.globalConfigFile, this.globalConfigList);
 
             } catch (IOException e) {
-                LOGGER.error("[All Stackable] Failed to parse a global config");
+                AllStackableInit.LOGGER.error("[All Stackable] Failed to parse a global config");
                 throw new RuntimeException("Could not parse global config", e);
             }
         } else {
@@ -268,7 +266,7 @@ final public class ConfigManager {
             this.globalConfigList.add(new LinkedHashMap<String, Integer>());
             this.globalConfigList.add(this.defaultRules(true));
             this.writeConfig(this.globalConfigFile, this.globalConfigList);
-            LOGGER.info("[All Stackable] New global config created, disabled by default.");
+            AllStackableInit.LOGGER.info("[All Stackable] New global config created, disabled by default.");
         }
 
     }
@@ -305,7 +303,7 @@ final public class ConfigManager {
                     }
                 }
                 rulesMap.put(entry.getKey(), entry.getValue());
-                LOGGER.info("[All Stackable] New rule '" + entry.getKey() + "' added to the config file.");
+                AllStackableInit.LOGGER.info("[All Stackable] New rule '" + entry.getKey() + "' added to the config file.");
             }
         }
         return rulesMap;
@@ -316,7 +314,7 @@ final public class ConfigManager {
         this.writeConfig(this.configFile, this.configList);
         itemsHelper.setCountByConfig(this.configList.get(0).entrySet(), true);
         NetworkHelper.sentConfigToAll();
-        LOGGER.info("[All Stackable] Global config loaded");
+        AllStackableInit.LOGGER.info("[All Stackable] Global config loaded");
     }
 
 
