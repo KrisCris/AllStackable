@@ -11,6 +11,7 @@
 ![](https://img.shields.io/github/workflow/status/KrisCris/AllStackable/Java%20CI%20with%20Gradle/master)
 ![](https://img.shields.io/github/license/KrisCris/AllStackable)
 [![](http://cf.way2muchnoise.eu/versions/404312.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
+[![](https://cf.way2muchnoise.eu/full_404312_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
 
 Video: https://streamable.com/7htqbn ( Issues in the video has already been fixed! )
 
