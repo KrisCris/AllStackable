@@ -12,7 +12,8 @@
     "MixinMilkBucketItem",
     "MixinItemStack",
     "MixinPowderSnowBucketItem",
-    "MixinCauldronBlock"
+    "MixinCauldronBlock",
+    "MixinAxolotEntity"
   ],
   "client": [
     "MixinMinecraftClientGame"
