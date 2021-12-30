@@ -13,7 +13,9 @@
     "MixinItemStack",
     "MixinPowderSnowBucketItem",
     "MixinCauldronBlock",
-    "MixinAxolotEntity"
+    "MixinAxolotEntity",
+    "MixinAbstractFurnaceBlockEntity",
+    "AccessorFurnaceInventory"
   ],
   "client": [
     "MixinMinecraftClientGame"
