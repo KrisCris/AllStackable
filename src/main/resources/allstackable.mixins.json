@@ -13,7 +13,7 @@
     "MixinItemStack",
     "MixinPowderSnowBucketItem",
     "MixinCauldronBlock",
-    "MixinAxolotEntity",
+    "MixinAxolotlEntity",
     "MixinAbstractFurnaceBlockEntity",
     "AccessorFurnaceInventory"
   ],

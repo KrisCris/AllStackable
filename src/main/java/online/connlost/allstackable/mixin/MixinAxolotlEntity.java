@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AxolotlEntity.class)
-public class MixinAxolotEntity {
+public class MixinAxolotlEntity {
     @Inject(method = "eat", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;setStackInHand(Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;)V"), cancellable = true)
     protected void reduceBucketsByOne(PlayerEntity player, Hand hand, ItemStack stack, CallbackInfo ci){
         if (ItemsHelper.isModified(stack) && stack.getCount() > 1){
