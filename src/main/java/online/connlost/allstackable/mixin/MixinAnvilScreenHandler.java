@@ -21,9 +21,10 @@ public class MixinAnvilScreenHandler {
     **/
     @Redirect(method = "onTakeOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V"))
     private void decrementOne(Inventory inventory, int slot, ItemStack stack) {
-        if (ItemsHelper.isModified(stack) && stack.getCount() > 1) { 
+        ItemStack originalStack = inventory.getStack(slot);
+        if (ItemsHelper.isModified(originalStack) && originalStack.getCount() > 1) {
             if(stack.isEmpty()) {
-                stack = inventory.getStack(slot);
+                stack = originalStack;
                 stack.decrement(1);
             }
         }
