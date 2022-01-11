@@ -28,7 +28,13 @@ If applicable, add screenshots to help explain your problem.
  - Mod Version [e.g. 1.5.0]
  - Java Version [e.g. 1.17]
 
+
 **Other mods**
+If applicable
+
+
+**Crash log**
+If applicable
 
 
 **Additional context**
