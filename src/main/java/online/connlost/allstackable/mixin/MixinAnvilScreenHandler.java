@@ -1,12 +1,15 @@
 package online.connlost.allstackable.mixin;
 
+import online.connlost.allstackable.util.IItemMaxCount;
 import online.connlost.allstackable.util.ItemsHelper;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AnvilScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -15,20 +18,23 @@ public class MixinAnvilScreenHandler {
     /**
     * 
     * Decrement the input stacks by one instead of blindly setting them
-    * to an empty stack.
+    * to an empty stack. The decrement is only done on the server to avoid
+    * a desync between the server and client that results in renaming breaking.
     * This prevents entire stacks from being deleted at a time.
     * 
     **/
     @Redirect(method = "onTakeOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V"))
-    private void decrementOne(Inventory inventory, int slot, ItemStack stack) {
+    private void decrementOne(Inventory inventory, int slot, ItemStack stack, PlayerEntity player, ItemStack takenStack) {
         ItemStack originalStack = inventory.getStack(slot);
         if (ItemsHelper.isModified(originalStack) && originalStack.getCount() > 1) {
             if(stack.isEmpty()) {
                 stack = originalStack;
-                stack.decrement(1);
+                if (!player.world.isClient) {
+                    stack.decrement(1);
+                }
             }
         }
-        
+            
         inventory.setStack(slot, stack);
     }
     
@@ -47,17 +53,18 @@ public class MixinAnvilScreenHandler {
     
     /**
     * 
-    * Only output a single item at a time.
-    * This prevents entire stacks from being repaired/enchanted at a time.
-    * 
+    * Only output a single item at a time when the item was originally capped
+    * at 1.
+    * This prevents entire stacks from being repaired/enchanted at a time with
+    * wrong costs. It assumes that if the item was originally stackable, that
+    * its anvil costs are already balanced.
+    *
     **/
-    @Redirect(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;", ordinal = 0))
-    public ItemStack copyOne(ItemStack itemStack) {
-        ItemStack stack = itemStack.copy();
-        if (ItemsHelper.isModified(stack) && stack.getCount() > 1) { 
-            if(!stack.isEmpty()) {
-                stack.setCount(1);
-            }
+    @ModifyVariable(method = "updateResult", at = @At("STORE"), ordinal = 0)
+    private ItemStack copyOne(ItemStack stack) {
+        if (ItemsHelper.isModified(stack) && ((IItemMaxCount) stack.getItem()).getVanillaMaxCount() == 1) { 
+            stack = stack.copy();
+            stack.setCount(1);
         }
         return stack;
     }
