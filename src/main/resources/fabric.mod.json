@@ -3,8 +3,8 @@
   "id": "allstackable",
   "version": "${version}",
 
-  "name": "All Stackable",
-  "description": "Try using 10 Bows at a time! (x)",
+  "name": "AllStackable",
+  "description": "A highly customizable Fabric Mod that makes items stackable and allows you to change the stack size of them.",
   "authors": [
     "Conn_Lost"
   ],
