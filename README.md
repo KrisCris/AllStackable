@@ -106,4 +106,7 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 
 ---
 
-#### ***Sorry, No plan for Forge.***
+
+## Thanks
+
+- luaanon
