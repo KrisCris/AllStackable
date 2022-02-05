@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StewItem.class)
 public class MixinMushroomStewItem {
 
-    @Inject(method = "finishUsing", at=@At(value = "NEW", target = "net/minecraft/item/ItemStack"), cancellable = true)
-    private void stackableStew(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir){
-        if (ItemsHelper.isModified(stack) && stack.getCount()>0){
-            if (user instanceof PlayerEntity){
-                ItemsHelper.insertNewItem((PlayerEntity)user, new ItemStack(Items.BOWL));
+    @Inject(method = "finishUsing", at = @At(value = "NEW", target = "net/minecraft/item/ItemStack"), cancellable = true)
+    private void stackableStew(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
+        if (ItemsHelper.isModified(stack) && stack.getCount() > 1) {
+            if (user instanceof PlayerEntity) {
+                ItemsHelper.insertNewItem((PlayerEntity) user, new ItemStack(Items.BOWL));
             }
             cir.setReturnValue(stack);
         }

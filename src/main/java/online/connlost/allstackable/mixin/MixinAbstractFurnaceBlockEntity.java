@@ -18,7 +18,7 @@ public class MixinAbstractFurnaceBlockEntity {
     @Inject(method = "tick", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/item/ItemStack;decrement(I)V"))
     private static void popBuckets(World world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity, CallbackInfo ci){
         ItemStack itemStack = (ItemStack)((AccessorFurnaceInventory)blockEntity).getInventory().get(1);
-        if(ItemsHelper.isModified(itemStack)) {
+        if(ItemsHelper.isModified(itemStack) && itemStack.getCount() > 1) {
             if (itemStack.isOf(Items.LAVA_BUCKET)){
                 ItemScatterer.spawn(world, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), new ItemStack(Items.BUCKET));
             }

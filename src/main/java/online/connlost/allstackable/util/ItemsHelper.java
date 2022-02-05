@@ -187,6 +187,6 @@ public class ItemsHelper {
             return false;
         }
         Item i = s.getItem();
-        return (((IItemMaxCount) i).getVanillaMaxCount() != i.getMaxCount()) && s.getCount() > 1;
+        return ((IItemMaxCount) i).getVanillaMaxCount() != i.getMaxCount();
     }
 }

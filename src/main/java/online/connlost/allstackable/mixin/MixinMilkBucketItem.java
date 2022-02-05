@@ -16,12 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinMilkBucketItem {
 
     @Inject(method = "finishUsing", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/item/ItemStack;decrement(I)V"), cancellable = true)
-    private void stackableMilkBucket(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir){
-        if (!stack.isEmpty() && ItemsHelper.isModified(stack)){
+    private void stackableMilkBucket(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
+        if (!stack.isEmpty() && ItemsHelper.isModified(stack) && stack.getCount() > 1) {
             if (!world.isClient)
                 user.clearStatusEffects();
-            if (user instanceof PlayerEntity){
-                ItemsHelper.insertNewItem((PlayerEntity)user, new ItemStack(Items.BUCKET));
+            if (user instanceof PlayerEntity) {
+                ItemsHelper.insertNewItem((PlayerEntity) user, new ItemStack(Items.BUCKET));
                 cir.setReturnValue(stack);
             }
         }
