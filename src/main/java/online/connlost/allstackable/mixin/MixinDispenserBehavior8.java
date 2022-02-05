@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "net/minecraft/block/dispenser/DispenserBehavior$8")
-public class MixinDispenserBehavior {
+public class MixinDispenserBehavior8 {
     @Shadow
     @Final
     private ItemDispenserBehavior fallbackBehavior;
@@ -27,8 +27,7 @@ public class MixinDispenserBehavior {
      * This prevents entire stacks from being deleted at a time.
      **/
     @Inject(
-//        method = "Lnet/minecraft/block/dispenser/ItemDispenserBehavior;dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;",
-            method = "dispenseSilently",
+            method = "Lnet/minecraft/block/dispenser/ItemDispenserBehavior;dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/item/FluidModificationItem;onEmptied(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/math/BlockPos;)V",
