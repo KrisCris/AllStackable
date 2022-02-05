@@ -20,7 +20,8 @@
     "MixinHorseScreenHandler",
     "MixinServerPlayNetworkHandler",
     "MixinJukeboxBlockEntity",
-    "AccessorFurnaceInventory"
+    "AccessorFurnaceInventory",
+    "MixinPotionItem"
   ],
   "client": [
     "MixinMinecraftClientGame"
