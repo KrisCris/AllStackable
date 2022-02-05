@@ -21,7 +21,8 @@
     "MixinServerPlayNetworkHandler",
     "MixinJukeboxBlockEntity",
     "AccessorFurnaceInventory",
-    "MixinPotionItem"
+    "MixinPotionItem",
+    "MixinDispenserBlockEntity"
   ],
   "client": [
     "MixinMinecraftClientGame"
