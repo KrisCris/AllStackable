@@ -90,7 +90,11 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 
 **Identical to sorting normal items. https://streamable.com/11hm1a**
 
-[6]. I find a bug! / This mod doesn't work! / Any other Issues
+[6]. Surpass 64 items limit?
+
+***NO***
+
+[7]. I find a bug! / This mod doesn't work! / Any other Issues
 
 **[Report!](https://github.com/KrisCris/AllStackable/issues/)**
 
