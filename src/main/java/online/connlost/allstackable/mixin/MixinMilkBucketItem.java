@@ -25,7 +25,5 @@ public class MixinMilkBucketItem {
                 cir.setReturnValue(stack);
             }
         }
-
-
     }
 }

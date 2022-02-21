@@ -17,7 +17,8 @@ public class MixinSuspiciousStewItem {
 
     @Inject(method = "finishUsing", at = @At(value = "NEW", target = "net/minecraft/item/ItemStack"), cancellable = true)
     private void stackableStew(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-        if (ItemsHelper.isModified(stack) && stack.getCount() > 1) {
+        // >= 1 because it is decreased by 1 before our code execution
+        if (ItemsHelper.isModified(stack) && stack.getCount() >= 1) {
             if (user instanceof PlayerEntity) {
                 ItemsHelper.insertNewItem((PlayerEntity)user, new ItemStack(Items.BOWL));
             }
