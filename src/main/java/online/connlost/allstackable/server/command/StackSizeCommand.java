@@ -3,20 +3,20 @@ package online.connlost.allstackable.server.command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.text.Text;
 import online.connlost.allstackable.server.config.ConfigManager;
 import online.connlost.allstackable.util.ItemsHelper;
 
 import static net.minecraft.server.command.CommandManager.literal;
 import static net.minecraft.server.command.CommandManager.argument;
 
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
 
 import java.util.LinkedList;
 
@@ -26,8 +26,8 @@ public class StackSizeCommand {
     private static ConfigManager configManager = ConfigManager.getConfigManager();
 
     private static int showItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
-        source.sendFeedback(new TranslatableText("as.command.show_item",
-                new TranslatableText(item.getTranslationKey()),
+        source.sendFeedback(Text.translatable("as.command.show_item",
+                Text.translatable(item.getTranslationKey()),
                 itemsHelper.getCurrentCount(item),
                 itemsHelper.getDefaultCount(item)), false);
         return 1;
@@ -36,11 +36,11 @@ public class StackSizeCommand {
     private static int showAll(ServerCommandSource source) throws CommandSyntaxException {
         LinkedList<Item> list = itemsHelper.getAllModifiedItems();
         if (list.isEmpty()) {
-            source.sendFeedback(new TranslatableText("as.command.show_none"), false);
+            source.sendFeedback(Text.translatable("as.command.show_none"), false);
         }
         for (Item item : list) {
-            source.sendFeedback(new TranslatableText("as.command.show_item",
-                    new TranslatableText(item.getTranslationKey()),
+            source.sendFeedback(Text.translatable("as.command.show_item",
+                    Text.translatable(item.getTranslationKey()),
                     itemsHelper.getCurrentCount(item),
                     itemsHelper.getDefaultCount(item)), false);
         }
@@ -58,8 +58,8 @@ public class StackSizeCommand {
     private static int setItem(ServerCommandSource source, Item item, int count) throws CommandSyntaxException {
         itemsHelper.setSingle(item, count);
         configManager.syncConfig();
-        source.sendFeedback(new TranslatableText("as.command.set_item",
-                new TranslatableText(item.getTranslationKey()),
+        source.sendFeedback(Text.translatable("as.command.set_item",
+                Text.translatable(item.getTranslationKey()),
                 count,
                 itemsHelper.getDefaultCount(item)), true);
         return 1;
@@ -77,11 +77,11 @@ public class StackSizeCommand {
         int count = itemsHelper.setMatchedItems(originalSize, newSize, type);
         configManager.syncConfig();
         source.sendFeedback(
-                new TranslatableText(
+                Text.translatable(
                         "as.command.set_matched",
                         count,
                         newSize,
-                        type.equals("vanilla") ? new TranslatableText("as.command.default") : new TranslatableText("as.command.previous"),
+                        type.equals("vanilla") ? Text.translatable("as.command.default") : Text.translatable("as.command.previous"),
                         originalSize
                 ),
                 true
@@ -92,15 +92,15 @@ public class StackSizeCommand {
     private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
         itemsHelper.resetItem(item);
         configManager.syncConfig();
-        source.sendFeedback(new TranslatableText("as.command.reset_item",
-                new TranslatableText(item.getTranslationKey())), true);
+        source.sendFeedback(Text.translatable("as.command.reset_item",
+                Text.translatable(item.getTranslationKey())), true);
         return 1;
     }
 
     private static int resetAllItems(ServerCommandSource source) {
         itemsHelper.resetAll(true);
         configManager.resetAllItems();
-        source.sendFeedback(new TranslatableText("as.command.reset_all"), true);
+        source.sendFeedback(Text.translatable("as.command.reset_all"), true);
         return 1;
     }
 
@@ -115,10 +115,10 @@ public class StackSizeCommand {
     private static Item getMainHandItem(ServerCommandSource source, ServerPlayerEntity serverPlayerEntity) throws CommandSyntaxException {
         ItemStack itemStack = serverPlayerEntity.getMainHandStack();
         if (itemStack.isEmpty()) {
-            String u1 = serverPlayerEntity.getName().asString();
+            String u1 = serverPlayerEntity.getName().getContent().toString();
             String u2 = source.getEntity() instanceof ServerPlayerEntity ? source.getName() : "Server";
 
-            source.sendError(new TranslatableText("as.command.error_empty_hand", u1.equals(u2) ? new TranslatableText("as.command.you") : serverPlayerEntity.getName()));
+            source.sendError(Text.translatable("as.command.error_empty_hand", u1.equals(u2) ? Text.translatable("as.command.you") : serverPlayerEntity.getName()));
             return null;
         }
         return itemStack.getItem();
@@ -126,39 +126,39 @@ public class StackSizeCommand {
 
     private static int reloadConfig(ServerCommandSource source) throws CommandSyntaxException {
         configManager.setupConfig();
-        source.sendFeedback(new TranslatableText("as.command.reloaded", source.getPlayer().getName()), true);
+        source.sendFeedback(Text.translatable("as.command.reloaded", source.getPlayerOrThrow().getName()), true);
         return 1;
     }
 
-    private static int updateGlobalConfig(ServerCommandSource source, boolean allowAutoApply, boolean updateStackableList){
+    private static int updateGlobalConfig(ServerCommandSource source, boolean allowAutoApply, boolean updateStackableList) {
         configManager.updateGlobalConfig(updateStackableList, allowAutoApply);
-        source.sendFeedback(new TranslatableText("as.command.updated_glob_conf"), true);
+        source.sendFeedback(Text.translatable("as.command.updated_glob_conf"), true);
         return 1;
     }
 
-    private static int fromGlobal(ServerCommandSource source){
+    private static int fromGlobal(ServerCommandSource source) {
         configManager.applyGlobalToLocal();
-        source.sendFeedback(new TranslatableText("as.command.from_global"),true);
+        source.sendFeedback(Text.translatable("as.command.from_global"), true);
         return 1;
     }
 
-    private static int restore(ServerCommandSource source){
-        if (configManager.restoreBackup()){
-            source.sendFeedback(new TranslatableText("as.command.restored"), true);
+    private static int restore(ServerCommandSource source) {
+        if (configManager.restoreBackup()) {
+            source.sendFeedback(Text.translatable("as.command.restored"), true);
             return 1;
         } else {
-            source.sendError(new TranslatableText("as.command.nobk"));
+            source.sendError(Text.translatable("as.command.nobk"));
             return 0;
         }
     }
 
-    private static int help(ServerCommandSource source){
-        source.sendFeedback(new TranslatableText("as.command.help"),false);
+    private static int help(ServerCommandSource source) {
+        source.sendFeedback(Text.translatable("as.command.help"), false);
         return 1;
     }
 
     public static void register() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("allstackable")
                     .requires(source -> source.hasPermissionLevel(configManager.getRuleSetting("permissionLevel")))
                     .then(literal("help").executes(ctx -> help(ctx.getSource())))
@@ -170,7 +170,7 @@ public class StackSizeCommand {
                             .then(literal("all")
                                     .executes(ctx -> showAll(ctx.getSource()))
                             )
-                            .then(argument("item", ItemStackArgumentType.itemStack())
+                            .then(argument("item", ItemStackArgumentType.itemStack(registryAccess))
                                     .executes(ctx -> showItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                             )
 
@@ -183,12 +183,12 @@ public class StackSizeCommand {
                             .then(literal("all")
                                     .executes(ctx -> resetAllItems(ctx.getSource()))
                             )
-                            .then(argument("item", ItemStackArgumentType.itemStack())
+                            .then(argument("item", ItemStackArgumentType.itemStack(registryAccess))
                                     .executes(ctx -> resetItem(ctx.getSource(), ItemStackArgumentType.getItemStackArgument(ctx, "item").getItem()))
                             )
                     )
                     .then(literal("set")
-                            .then(argument("item", ItemStackArgumentType.itemStack())
+                            .then(argument("item", ItemStackArgumentType.itemStack(registryAccess))
                                     .then(argument("count", IntegerArgumentType.integer(1, 64))
                                             .executes(ctx -> setItem(
                                                     ctx.getSource(),
@@ -262,6 +262,7 @@ public class StackSizeCommand {
                     );
 
             dispatcher.register(literalArgumentBuilder);
+
         });
     }
 

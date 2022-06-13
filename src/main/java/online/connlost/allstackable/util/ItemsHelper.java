@@ -133,7 +133,7 @@ public class ItemsHelper {
 
 
     private Set<Map.Entry<RegistryKey<Item>, Item>> getItemSet() {
-        return Registry.ITEM.getEntries();
+        return Registry.ITEM.getEntrySet();
     }
 
 
