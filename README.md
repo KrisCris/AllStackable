@@ -15,6 +15,14 @@
 
 Video: https://streamable.com/7htqbn ( Issues in the video has already been fixed! )
 
+## Download
+
+**[Modrinth](https://modrinth.com/mods?s=updated)**
+
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/all-stackable)
+
+[Github Action Artifacts](https://github.com/KrisCris/AllStackable/actions)
+
 
 ## Usage
 
@@ -44,7 +52,7 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 
 ---
 
-**Chinese**
+[**Chinese**](https://www.mcbbs.net/forum.php?mod=viewthread&tid=1112866)
 
 - `/allstackable show all`: 列出所有修改过的物品.
 - `/allstackable show [item]`: 显示这个物品的信息.
