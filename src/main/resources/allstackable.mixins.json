@@ -18,6 +18,7 @@
     "MixinAnvilScreenHandler",
     "MixinDispenserBehavior8",
     "MixinDispenserBehavior9",
+    "MixinDispenserBehavior20",
     "MixinHorseScreenHandler",
     "MixinServerPlayNetworkHandler",
     "MixinJukeboxBlockEntity",
@@ -28,6 +29,7 @@
   "client": [
     "MixinMinecraftClientGame"
   ],
+  "plugin": "online.connlost.allstackable.mixin.AllStackableMixinsPlugin",
   "injectors": {
     "defaultRequire": 1
   }
