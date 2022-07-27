@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinDispenserBehavior9 {
 
     @Redirect(
-            method = "Lnet/minecraft/block/dispenser/ItemDispenserBehavior;dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;",
+            method = "dispenseSilently",
             at = @At(
                     target = "Lnet/minecraft/block/entity/DispenserBlockEntity;addToFirstFreeSlot(Lnet/minecraft/item/ItemStack;)I",
                     value = "INVOKE"

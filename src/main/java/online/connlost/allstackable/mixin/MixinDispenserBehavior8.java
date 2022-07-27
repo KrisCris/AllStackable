@@ -27,7 +27,7 @@ public class MixinDispenserBehavior8 {
      * This prevents entire stacks from being deleted at a time.
      **/
     @Inject(
-            method = "Lnet/minecraft/block/dispenser/ItemDispenserBehavior;dispenseSilently(Lnet/minecraft/util/math/BlockPointer;Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/ItemStack;",
+            method = "dispenseSilently",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/item/FluidModificationItem;onEmptied(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/math/BlockPos;)V",
@@ -38,11 +38,11 @@ public class MixinDispenserBehavior8 {
         if (ItemsHelper.isModified(stack) && stack.getCount() > 1) {
             ItemStack newStack = stack.copy();
             newStack.decrement(1);
-            if (((DispenserBlockEntity) pointer.getBlockEntity()).addToFirstFreeSlot(Items.BUCKET.getDefaultStack()) < 0) {
+//            if (((DispenserBlockEntity) pointer.getBlockEntity()).addToFirstFreeSlot(Items.BUCKET.getDefaultStack()) < 0) {
                 if (!((IDispenserBlockEntity) pointer.getBlockEntity()).tryInsertAndStackItem(Items.BUCKET.getDefaultStack())) {
                     this.fallbackBehavior.dispense(pointer, Items.BUCKET.getDefaultStack());
                 }
-            }
+//            }
             cir.setReturnValue(newStack);
         }
     }
