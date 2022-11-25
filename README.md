@@ -1,4 +1,7 @@
 # All Stackable
+
+## I will probably continue maintaining this mod for one or two major version updates of minecraft, but likely there won't be any feature update.
+
 ![](https://i.imgur.com/31Q4pb2.png "")
 
 **A highly customizable Fabric Mod that makes items stackable and change the stack size of them.**
