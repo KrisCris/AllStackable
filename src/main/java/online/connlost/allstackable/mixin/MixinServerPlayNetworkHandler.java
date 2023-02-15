@@ -28,7 +28,7 @@ public class MixinServerPlayNetworkHandler {
     *
     **/
     @ModifyVariable(method = "addBook", at = @At("STORE"), ordinal = 1)
-    public ItemStack fixSignedBookCount(ItemStack itemStack2, FilteredMessage<String> title, List<FilteredMessage<String>> pages, int slotId) {
+    public ItemStack fixSignedBookCount(ItemStack itemStack2, FilteredMessage title, List<FilteredMessage> pages, int slotId) {
         ItemStack originalStack = player.getInventory().getStack(slotId);
         if (ItemsHelper.isModified(originalStack)) {
             itemStack2.setCount(originalStack.getCount());
@@ -44,7 +44,7 @@ public class MixinServerPlayNetworkHandler {
     *
     **/
     @Inject(method = "addBook", at = @At("RETURN"))
-    public void fixSignedBookOverCount(FilteredMessage<String> title, List<FilteredMessage<String>> pages, int slotId, CallbackInfo ci) {
+    public void fixSignedBookOverCount(FilteredMessage title, List<FilteredMessage> pages, int slotId, CallbackInfo ci) {
         ItemStack itemStack2 = player.getInventory().getStack(slotId);
         if (ItemsHelper.isModified(itemStack2) && (itemStack2.getCount() > itemStack2.getMaxCount())) {
             ItemStack splitStack = itemStack2.copy();
