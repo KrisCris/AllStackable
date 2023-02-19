@@ -4,11 +4,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -39,13 +39,13 @@ public class ItemsHelper {
 
     public void resetItem(Item item) {
         ((IItemMaxCount) item).revert();
-        LOGGER.info("[All Stackable] Reset "+Registry.ITEM.getId(item).toString());
+        LOGGER.info("[All Stackable] Reset "+Registries.ITEM.getId(item).toString());
     }
 
     public void setCountByConfig(Set<Map.Entry<String, Integer>> configSet, boolean serverSide) {
         resetAll(serverSide);
         for (Map.Entry<String, Integer> entry : configSet) {
-            Item item = Registry.ITEM.get(new Identifier(entry.getKey()));
+            Item item = Registries.ITEM.get(new Identifier(entry.getKey()));
             int size = Integer.min(entry.getValue(), 64);
             if (serverSide)
                 LOGGER.info("[All Stackable] Set " + entry.getKey() + " to " + size);
@@ -70,7 +70,7 @@ public class ItemsHelper {
 
     public void setSingle(Item item, int count) {
         ((IItemMaxCount) item).setMaxCount(count);
-        LOGGER.info("[All Stackable] Set "+Registry.ITEM.getId(item).toString()+" to "+ count);
+        LOGGER.info("[All Stackable] Set "+Registries.ITEM.getId(item).toString()+" to "+ count);
     }
 
     public LinkedList<Item> getAllModifiedItems() {
@@ -123,7 +123,7 @@ public class ItemsHelper {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         for (Map.Entry<RegistryKey<Item>, Item> itemEntry : getItemSet()) {
             Item item = itemEntry.getValue();
-            String id = Registry.ITEM.getId(item).toString();
+            String id = Registries.ITEM.getId(item).toString();
             if (getDefaultCount(item) != getCurrentCount(item) && !map.containsKey(id)) {
                 map.put(id, item.getMaxCount());
             }
@@ -133,7 +133,7 @@ public class ItemsHelper {
 
 
     private Set<Map.Entry<RegistryKey<Item>, Item>> getItemSet() {
-        return Registry.ITEM.getEntrySet();
+        return Registries.ITEM.getEntrySet();
     }
 
 
