@@ -18,8 +18,8 @@ public class MixinJukeboxBlockEntity {
     * stack by 1, but the Jukebox stores and drops the full stack instead.
     * 
     **/
-    @ModifyVariable(method = "setRecord", at = @At("HEAD"))
-    private ItemStack setRecord(ItemStack stack) {
+    @ModifyVariable(method = "setStack", at = @At("HEAD"))
+    private ItemStack setStack(ItemStack stack) {
         if (ItemsHelper.isModified(stack) && stack.getCount() > 1) { 
             stack.setCount(1);
         }
