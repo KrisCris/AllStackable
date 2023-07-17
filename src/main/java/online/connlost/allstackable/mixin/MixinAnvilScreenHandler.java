@@ -29,7 +29,7 @@ public class MixinAnvilScreenHandler {
         if (ItemsHelper.isModified(originalStack) && originalStack.getCount() > 1) {
             if(stack.isEmpty()) {
                 stack = originalStack;
-                if (!player.world.isClient) {
+                if (!player.getWorld().isClient) {
                     stack.decrement(1);
                 }
             }
