@@ -26,7 +26,7 @@ public class StackSizeCommand {
     private static ConfigManager configManager = ConfigManager.getConfigManager();
 
     private static int showItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
-        source.sendFeedback(Text.translatable("as.command.show_item",
+        source.sendFeedback(() -> Text.translatable("as.command.show_item",
                 Text.translatable(item.getTranslationKey()),
                 itemsHelper.getCurrentCount(item),
                 itemsHelper.getDefaultCount(item)), false);
@@ -36,10 +36,10 @@ public class StackSizeCommand {
     private static int showAll(ServerCommandSource source) throws CommandSyntaxException {
         LinkedList<Item> list = itemsHelper.getAllModifiedItems();
         if (list.isEmpty()) {
-            source.sendFeedback(Text.translatable("as.command.show_none"), false);
+            source.sendFeedback(() -> Text.translatable("as.command.show_none"), false);
         }
         for (Item item : list) {
-            source.sendFeedback(Text.translatable("as.command.show_item",
+            source.sendFeedback(() -> Text.translatable("as.command.show_item",
                     Text.translatable(item.getTranslationKey()),
                     itemsHelper.getCurrentCount(item),
                     itemsHelper.getDefaultCount(item)), false);
@@ -58,7 +58,7 @@ public class StackSizeCommand {
     private static int setItem(ServerCommandSource source, Item item, int count) throws CommandSyntaxException {
         itemsHelper.setSingle(item, count);
         configManager.syncConfig();
-        source.sendFeedback(Text.translatable("as.command.set_item",
+        source.sendFeedback(() -> Text.translatable("as.command.set_item",
                 Text.translatable(item.getTranslationKey()),
                 count,
                 itemsHelper.getDefaultCount(item)), true);
@@ -76,7 +76,7 @@ public class StackSizeCommand {
     private static int setMatched(ServerCommandSource source, String type, int originalSize, int newSize) {
         int count = itemsHelper.setMatchedItems(originalSize, newSize, type);
         configManager.syncConfig();
-        source.sendFeedback(
+        source.sendFeedback(() ->
                 Text.translatable(
                         "as.command.set_matched",
                         count,
@@ -92,7 +92,7 @@ public class StackSizeCommand {
     private static int resetItem(ServerCommandSource source, Item item) throws CommandSyntaxException {
         itemsHelper.resetItem(item);
         configManager.syncConfig();
-        source.sendFeedback(Text.translatable("as.command.reset_item",
+        source.sendFeedback(() -> Text.translatable("as.command.reset_item",
                 Text.translatable(item.getTranslationKey())), true);
         return 1;
     }
@@ -100,7 +100,7 @@ public class StackSizeCommand {
     private static int resetAllItems(ServerCommandSource source) {
         itemsHelper.resetAll(true);
         configManager.resetAllItems();
-        source.sendFeedback(Text.translatable("as.command.reset_all"), true);
+        source.sendFeedback(() -> Text.translatable("as.command.reset_all"), true);
         return 1;
     }
 
@@ -124,27 +124,33 @@ public class StackSizeCommand {
         return itemStack.getItem();
     }
 
-    private static int reloadConfig(ServerCommandSource source) throws CommandSyntaxException {
+    private static int reloadConfig(ServerCommandSource source) {
         configManager.setupConfig();
-        source.sendFeedback(Text.translatable("as.command.reloaded", source.getPlayerOrThrow().getName()), true);
+        source.sendFeedback(() -> {
+            try {
+                return Text.translatable("as.command.reloaded", source.getPlayerOrThrow().getName());
+            } catch (CommandSyntaxException e) {
+                return Text.of(e.getMessage());
+            }
+        }, true);
         return 1;
     }
 
     private static int updateGlobalConfig(ServerCommandSource source, boolean allowAutoApply, boolean updateStackableList) {
         configManager.updateGlobalConfig(updateStackableList, allowAutoApply);
-        source.sendFeedback(Text.translatable("as.command.updated_glob_conf"), true);
+        source.sendFeedback(() -> Text.translatable("as.command.updated_glob_conf"), true);
         return 1;
     }
 
     private static int fromGlobal(ServerCommandSource source) {
         configManager.applyGlobalToLocal();
-        source.sendFeedback(Text.translatable("as.command.from_global"), true);
+        source.sendFeedback(() -> Text.translatable("as.command.from_global"), true);
         return 1;
     }
 
     private static int restore(ServerCommandSource source) {
         if (configManager.restoreBackup()) {
-            source.sendFeedback(Text.translatable("as.command.restored"), true);
+            source.sendFeedback(() -> Text.translatable("as.command.restored"), true);
             return 1;
         } else {
             source.sendError(Text.translatable("as.command.nobk"));
@@ -153,7 +159,7 @@ public class StackSizeCommand {
     }
 
     private static int help(ServerCommandSource source) {
-        source.sendFeedback(Text.translatable("as.command.help"), false);
+        source.sendFeedback(() -> Text.translatable("as.command.help"), false);
         return 1;
     }
 
