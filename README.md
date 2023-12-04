@@ -1,12 +1,15 @@
 # All Stackable
 
-## I will probably continue maintaining this mod for one or two major version updates of minecraft, but likely there won't be any feature update.
-
 ![](https://i.imgur.com/31Q4pb2.png "")
 
-**A highly customizable Fabric Mod that makes items stackable and change the stack size of them.**
+**A highly customizable Fabric Mod that makes items stackable and changes their stack size.**
 
-***Ever wanted to stack potions, totems, or Shulker Boxes in one slot? Or perhaps hope to sort totems produced by the raid farm using your Redstone machines? This is the mod for you!***
+***Ever wanted to stack potions, totems, or Shulker Boxes in one slot? Or perhaps you hope to sort totems produced by the raid farm using your Redstone machines? This is the mod for you!***
+
+<!--- markdown syntax
+[![Supported on Fabric](https://cdn.discordapp.com/attachments/705864145169416313/969720133998239794/fabric_supported.png)](https://fabricmc.net/)
+[![Supported on Quilt](https://cdn.discordapp.com/attachments/705864145169416313/969716884482183208/quilt_supported.png)](https://quiltmc.org/)
+-->
 
 <a href="https://fabricmc.net/"><img
     src="https://cdn.discordapp.com/attachments/705864145169416313/969720133998239794/fabric_supported.png"
@@ -18,13 +21,13 @@
     width="200"></a>
 
 
-![](https://img.shields.io/github/actions/workflow/status/KrisCris/AllStackable/gradle.yml)
-![](https://img.shields.io/github/license/KrisCris/AllStackable)
-[![](http://cf.way2muchnoise.eu/versions/404312.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
-[![](https://cf.way2muchnoise.eu/full_404312_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
-<a href="https://modrinth.com/mod/mwMd6V4r"><img src="https://img.shields.io/modrinth/dt/mwMd6V4r?logo=modrinth&label=&style=flat&color=242629&labelColor=00AF5C&logoColor=black" alt="Modrinth"></a>
+![GitHub Actions](https://img.shields.io/github/actions/workflow/status/KrisCris/AllStackable/gradle.yml)
+![License](https://img.shields.io/github/license/KrisCris/AllStackable)
+[![Download from CurseForge](http://cf.way2muchnoise.eu/versions/404312.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
+[![Download from CurseForge](https://cf.way2muchnoise.eu/full_404312_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/all-stackable/files)
+[![Download from Modrinth](https://img.shields.io/modrinth/dt/mwMd6V4r?logo=modrinth&label=&style=flat&color=242629&labelColor=00AF5C&logoColor=black)](https://modrinth.com/mod/mwMd6V4r)
 
-Video: https://streamable.com/7htqbn ( Issues in the video has already been fixed! )
+Video: https://streamable.com/7htqbn ( Issues in the video have already been fixed! )
 
 ## Download
 
@@ -53,8 +56,8 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 - `/allstackable set modified [current value] [new value]`: Apply **new value** to the stackable size of items whose current size is **current value**. (Only works for items that have been modified.)
 - `/allstackable set all [current value] [new value]`: Apply **new value** to the stackable size of items whose current size is **current value**. (Applies to all items.)
 - `/allstackable config reload`: Reload config from file.
-- `/allstackable config loadFromGlobal`: load the global config (stored in minecraft's config folder) to your game.
-- `/allstackable config saveToGlobal`: Let your current config to be the global config.
+- `/allstackable config loadFromGlobal`: load the global config (stored in Minecraft's config folder) to your game.
+- `/allstackable config saveToGlobal`: Let your current config be the global one.
 - `/allstackable config globalConfigAutoApply [true/false]`: whether the global config will be automatically applied to every new game.
 - `/allstackable config restore`: restore to last change
 
@@ -101,25 +104,25 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 
 [4]. Server?
 
-**You have to install this mod on both sides. Server will automatically let clients know if any item needs to be modified and synced.**
+**You have to install this mod on both sides. The server will automatically let clients know if any item needs to be modified and synced.**
 
-**Also, use [LoganDark's mod, fabric-languagehack](https://github.com/LoganDark/fabric-languagehack/releases), or something similar for enabling server-side (server cli) text translation if you want to see feedbacks in the console.**
+**Also, use [LoganDark's mod, fabric-languagehack](https://github.com/LoganDark/fabric-languagehack/releases), or something similar for enabling server-side (server cli) text translation if you want to see feedback in the console.**
 
-[5]. Sorting non-stackable items that made stackable by this mod.
+[5]. Sorting non-stackable items that are made stackable by this mod.
 
 **Identical to sorting normal items. https://streamable.com/11hm1a**
 
-[6]. Surpass 64 items limit?
+[6]. Surpass 64-item limit?
 
 ***NO***
 
-[7]. I find a bug! / This mod doesn't work! / Any other Issues
+[7]. I found a bug! / This mod doesn't work! / Any other Issues
 
 **[Report!](https://github.com/KrisCris/AllStackable/issues/)**
 
 ## Notice:
 
-(Some issues that related to how Minecraft's code works)
+(Some issues related to how Minecraft's code works)
 
 **[1].** Have a test before using/consuming certain types of stacked items (especially those having special functionalities), since you may lose them all or encounter unexpected behaviors. (Even though most issues are fixed in previous versions, please let me know if you found new bugs.)
 
@@ -130,6 +133,9 @@ Video: https://streamable.com/7htqbn ( Issues in the video has already been fixe
 ---
 
 
-## Thanks
+## Contributors - Thank YOU!
 
 - luaanon
+- MeeniMc
+- chimericdream
+- triphora
