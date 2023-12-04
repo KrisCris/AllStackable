@@ -28,7 +28,7 @@ public class MixinDispenserBehavior20 {
     private void decreaseOne(BlockPointer pointer, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
         // dispense empty bottle if dispenser is full
 //        if (((DispenserBlockEntity) pointer.getBlockEntity()).addToFirstFreeSlot(new ItemStack(Items.GLASS_BOTTLE)) < 0) {
-            if (!((IDispenserBlockEntity)pointer.getBlockEntity()).tryInsertAndStackItem(new ItemStack(Items.GLASS_BOTTLE))) {
+            if (!((IDispenserBlockEntity)pointer.blockEntity()).tryInsertAndStackItem(new ItemStack(Items.GLASS_BOTTLE))) {
                 this.fallback.dispense(pointer, new ItemStack(Items.GLASS_BOTTLE));
             }
 //        }

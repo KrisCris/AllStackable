@@ -1,5 +1,6 @@
 package online.connlost.allstackable.mixin;
 
+import net.minecraft.server.network.ConnectedClientData;
 import online.connlost.allstackable.server.Server;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinPlayerManager {
 
     @Inject(method = "onPlayerConnect", at = @At("RETURN"))
-    private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci)
+    private void onPlayerJoined(ClientConnection connection, ServerPlayerEntity player, ConnectedClientData clientData, CallbackInfo ci)
     {
         Server.onPlayerJoin(player);
     }
