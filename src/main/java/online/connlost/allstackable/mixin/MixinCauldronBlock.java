@@ -17,13 +17,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Map;
-
 @Mixin(AbstractCauldronBlock.class)
 public class MixinCauldronBlock {
 
     @Shadow
-    Map<Item, CauldronBehavior> behaviorMap;
+    CauldronBehavior.CauldronBehaviorMap behaviorMap;
 
 
     CauldronBehavior CLEAN_STACKED_SHULKER_BOX = (state, world, pos, player, hand, stack) -> {
@@ -50,7 +48,7 @@ public class MixinCauldronBlock {
     private void cleanStackedShulkerBox(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir){
         ItemStack itemStack = player.getStackInHand(hand);
         if (ItemsHelper.isModified(itemStack) && itemStack.getCount() > 1) {
-            if(behaviorMap.get(itemStack.getItem()) == CauldronBehavior.CLEAN_SHULKER_BOX){
+            if(behaviorMap.map().get(itemStack.getItem()) == CauldronBehavior.CLEAN_SHULKER_BOX){
                 cir.setReturnValue(CLEAN_STACKED_SHULKER_BOX.interact(state, world, pos, player, hand, itemStack));
             }
         }
