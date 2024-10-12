@@ -6,7 +6,6 @@
 		"MixinItem",
 		"MixinPlayerManager",
 		"MixinSuspiciousStewItem",
-		"MixinBucketItem",
 		"MixinItemStack",
 		"MixinPowderSnowBucketItem",
 		"MixinCauldronBlock",
