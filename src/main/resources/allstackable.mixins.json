@@ -1,28 +1,29 @@
 {
-	"required": true,
-	"package": "online.connlost.allstackable.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"MixinItem",
-		"MixinPlayerManager",
-		"MixinSuspiciousStewItem",
-		"MixinBucketItem",
-		"MixinItemStack",
-		"MixinPowderSnowBucketItem",
-		"MixinCauldronBlock",
-		"MixinAxolotlEntity",
-		"MixinAbstractFurnaceBlockEntity",
-		"MixinAnvilScreenHandler",
-		"MixinDispenserBehavior8",
-		"MixinDispenserBehavior9",
-		"MixinHorseScreenHandler",
-		"MixinServerPlayNetworkHandler",
-		"MixinJukeboxBlockEntity",
-		"AccessorFurnaceInventory",
-		"MixinPotionItem",
-		"MixinDispenserBlockEntity"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "online.connlost.allstackable.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AccessorFurnaceInventory",
+    "MixinAbstractFurnaceBlockEntity",
+    "MixinAnvilScreenHandler",
+    "MixinAxolotlEntity",
+    "MixinBucketItem",
+    "MixinCauldronBlock",
+    "MixinDispenserBehavior8",
+    "MixinDispenserBehavior9",
+    "MixinDispenserBlockEntity",
+    "MixinHorseScreenHandler",
+    "MixinItem",
+    "MixinItemStack",
+    "MixinJukeboxBlockEntity",
+    "MixinPlayerManager",
+    "MixinPotionItem",
+    "MixinPowderSnowBucketItem",
+    "MixinServerPlayNetworkHandler",
+    "MixinSuspiciousStewItem",
+    "MixinLevelStorage"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

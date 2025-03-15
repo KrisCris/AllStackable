@@ -16,7 +16,7 @@ import org.apache.commons.lang3.SerializationUtils;
 
 final public class ConfigManager {
     private static ConfigManager cm;
-    private File configFile;
+    public File configFile;
     private File globalConfigFile;
     private Gson gson;
     private ItemsHelper itemsHelper;
@@ -95,8 +95,10 @@ final public class ConfigManager {
     public void setupConfig() {
         loadConfig();
         itemsHelper.setCountByConfig(this.configList.get(0).entrySet(), true);
-        NetworkHelper.sentConfigToAll();
         AllStackable.LOGGER.info("[All Stackable] Config Loaded");
+    }
+    public void sandConfig2Player(){
+        NetworkHelper.sentConfigToAll();
     }
 
     public boolean restoreBackup() {
