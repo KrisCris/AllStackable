@@ -1,22 +1,13 @@
 package online.connlost.allstackable;
 
-import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.WorldSavePath;
-import net.minecraft.world.level.storage.LevelStorage;
 import online.connlost.allstackable.server.Server;
 import online.connlost.allstackable.server.command.StackSizeCommand;
-import online.connlost.allstackable.server.config.ConfigManager;
 import online.connlost.allstackable.util.ByteArrayPayload;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-
-import java.io.File;
-import java.nio.file.Path;
 
 import static online.connlost.allstackable.server.Server.config_manager;
 
