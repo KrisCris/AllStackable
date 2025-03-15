@@ -1,14 +1,11 @@
 package online.connlost.allstackable.server;
 
-import net.fabricmc.loader.impl.game.minecraft.launchwrapper.FabricServerTweaker;
 import online.connlost.allstackable.server.config.ConfigManager;
 import online.connlost.allstackable.util.NetworkHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.WorldSavePath;
 import online.connlost.allstackable.AllStackable;
 
-import java.io.File;
 
 
 public class Server {
