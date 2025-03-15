@@ -13,7 +13,7 @@ import static online.connlost.allstackable.server.Server.config_manager;
 @Mixin(LevelStorage.class)
 public class MixinLevelStorage {
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;resolve(Ljava/lang/String;)Ljava/nio/file/Path;"), method = "createSession")
-    private Path t1(LevelStorage instance, String name, Operation<Path> original){
+    private Path initConfig(LevelStorage instance, String name, Operation<Path> original){
         Path path = original.call(instance, name);
         config_manager.passConfigFile(path.resolve("allstackable-config.json").toFile());
         config_manager.setupConfig();
