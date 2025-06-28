@@ -1,3 +1,7 @@
+Thank you for your love and support! However, I am no longer able to maintain this mod. You can find the updated version here: https://github.com/MylesGit/AllStackableContinued
+
+---
+
 # All Stackable
 
 ![](https://i.imgur.com/31Q4pb2.png "")
