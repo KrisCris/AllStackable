@@ -1,4 +1,4 @@
-Thank you for your love and support! However, I am no longer able to maintain this mod. You can find the updated version here: https://github.com/MylesGit/AllStackableContinued
+Thank you for your love and support! Sadly, I am no longer able to maintain this mod actively. But no worries, you can find the updated version here (Thank you, Myles!): https://github.com/MylesGit/AllStackableContinued
 
 ---
 
